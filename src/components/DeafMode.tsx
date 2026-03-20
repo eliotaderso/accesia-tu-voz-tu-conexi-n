@@ -1,26 +1,63 @@
-import { Mic, MicOff, Trash2 } from "lucide-react";
+import { Mic, MicOff, Trash2, Copy, Check } from "lucide-react";
 import { useAccessibility } from "@/context/AccessibilityContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useRef, useCallback, useEffect } from "react";
 
+const STORAGE_KEY_HISTORY = "accesia_deaf_history";
+
+interface TranscriptEntry {
+  text: string;
+  timestamp: number;
+}
+
 const ListeningIndicator = () => (
   <div className="flex items-end gap-1 h-6">
     {[...Array(5)].map((_, i) => (
-      <div
-        key={i}
-        className="w-1 rounded-full bg-deaf listening-bar"
-        style={{ height: "100%" }}
-      />
+      <div key={i} className="w-1 rounded-full bg-deaf listening-bar" style={{ height: "100%" }} />
     ))}
   </div>
 );
+
+const formatTime = (ts: number): string => {
+  const diff = Math.round((Date.now() - ts) / 1000);
+  if (diff < 60) return "Ahora mismo";
+  if (diff < 3600) return `Hace ${Math.floor(diff / 60)} min`;
+  return new Date(ts).toLocaleTimeString("es-ES", { hour: "2-digit", minute: "2-digit" });
+};
 
 const DeafMode = () => {
   const { vibrate, textScale } = useAccessibility();
   const [isListening, setIsListening] = useState(false);
   const [currentText, setCurrentText] = useState("");
-  const [history, setHistory] = useState<string[]>([]);
+  const [history, setHistory] = useState<TranscriptEntry[]>(() => {
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY_HISTORY);
+      return stored ? JSON.parse(stored) : [];
+    } catch { return []; }
+  });
+  const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
   const recognitionRef = useRef<any>(null);
+  const [, forceUpdate] = useState(0);
+
+  // Update timestamps every 30s
+  useEffect(() => {
+    const interval = setInterval(() => forceUpdate(n => n + 1), 30000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Save history to localStorage
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY_HISTORY, JSON.stringify(history.slice(0, 50)));
+  }, [history]);
+
+  // Auto-start mic on mount
+  useEffect(() => {
+    const timer = setTimeout(() => startListening(), 500);
+    return () => {
+      clearTimeout(timer);
+      recognitionRef.current?.stop();
+    };
+  }, []);
 
   const startListening = useCallback(() => {
     const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
@@ -28,6 +65,9 @@ const DeafMode = () => {
       setCurrentText("Tu navegador no soporta reconocimiento de voz.");
       return;
     }
+    // Stop existing
+    recognitionRef.current?.stop();
+
     const recognition = new SpeechRecognition();
     recognition.lang = "es-ES";
     recognition.continuous = true;
@@ -45,7 +85,8 @@ const DeafMode = () => {
         }
       }
       if (final) {
-        setHistory((prev) => [final, ...prev].slice(0, 20));
+        const entry: TranscriptEntry = { text: final.trim(), timestamp: Date.now() };
+        setHistory((prev) => [entry, ...prev].slice(0, 50));
         setCurrentText("");
         vibrate(100);
       } else {
@@ -53,8 +94,18 @@ const DeafMode = () => {
       }
     };
 
-    recognition.onerror = () => setIsListening(false);
-    recognition.onend = () => setIsListening(false);
+    recognition.onerror = (e: any) => {
+      if (e.error !== "no-speech" && e.error !== "aborted") {
+        setIsListening(false);
+      }
+    };
+
+    // Auto-restart on end to keep continuous listening
+    recognition.onend = () => {
+      if (recognitionRef.current === recognition) {
+        try { recognition.start(); } catch { setIsListening(false); }
+      }
+    };
 
     recognition.start();
     recognitionRef.current = recognition;
@@ -63,11 +114,24 @@ const DeafMode = () => {
   }, [vibrate]);
 
   const stopListening = useCallback(() => {
-    recognitionRef.current?.stop();
+    const rec = recognitionRef.current;
+    recognitionRef.current = null;
+    rec?.stop();
     setIsListening(false);
   }, []);
 
-  useEffect(() => () => recognitionRef.current?.stop(), []);
+  const copyText = useCallback((text: string, index: number) => {
+    navigator.clipboard.writeText(text).catch(() => {});
+    setCopiedIndex(index);
+    vibrate(50);
+    setTimeout(() => setCopiedIndex(null), 1500);
+  }, [vibrate]);
+
+  const clearHistory = useCallback(() => {
+    setHistory([]);
+    localStorage.removeItem(STORAGE_KEY_HISTORY);
+    vibrate(100);
+  }, [vibrate]);
 
   return (
     <div className="flex flex-col px-5 pt-4 pb-32 scroll-smooth" style={{ fontSize: `${textScale}rem` }}>
@@ -80,13 +144,19 @@ const DeafMode = () => {
         }`}
       >
         {isListening && (
-          <div className="absolute top-4 right-4">
+          <div className="absolute top-4 right-4 flex items-center gap-2">
+            <span className="text-xs font-semibold text-deaf uppercase tracking-wider">En vivo</span>
             <ListeningIndicator />
           </div>
         )}
-        <p className={`text-accessible-2xl text-center ${!currentText && !isListening ? "text-muted-foreground" : ""}`}>
-          {currentText || (isListening ? "Escuchando..." : "Pulsa el micrófono para empezar")}
+        <p className={`text-accessible-2xl text-center mt-4 ${!currentText && !isListening ? "text-muted-foreground" : ""}`}>
+          {currentText || (isListening ? "Escuchando..." : "Micrófono apagado")}
         </p>
+        {isListening && !currentText && (
+          <p className="text-center text-sm text-muted-foreground mt-2">
+            Habla cerca del micrófono para ver la transcripción
+          </p>
+        )}
       </motion.div>
 
       {/* Controls */}
@@ -112,7 +182,7 @@ const DeafMode = () => {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.8 }}
               whileTap={{ scale: 0.9 }}
-              onClick={() => { setHistory([]); vibrate(100); }}
+              onClick={clearHistory}
               className="flex h-14 w-14 items-center justify-center rounded-full bg-secondary shadow-card"
               aria-label="Borrar historial"
             >
@@ -127,19 +197,32 @@ const DeafMode = () => {
         {history.length > 0 && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-2">
             <h2 className="text-sm font-semibold text-muted-foreground mb-2 px-1 uppercase tracking-wider">
-              Historial de transcripción
+              Historial ({history.length})
             </h2>
-            {history.map((text, i) => (
+            {history.map((entry, i) => (
               <motion.div
-                key={`${text}-${i}`}
+                key={`${entry.timestamp}-${i}`}
                 initial={{ opacity: 0, y: -8 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="rounded-2xl bg-card p-4 shadow-card"
+                className="group rounded-2xl bg-card p-4 shadow-card"
               >
-                <p className="text-accessible-lg">{text}</p>
-                <span className="text-xs text-muted-foreground mt-1 block">
-                  Hace un momento
-                </span>
+                <p className="text-accessible-lg">{entry.text}</p>
+                <div className="flex items-center justify-between mt-2">
+                  <span className="text-xs text-muted-foreground">
+                    {formatTime(entry.timestamp)}
+                  </span>
+                  <button
+                    onClick={() => copyText(entry.text, i)}
+                    className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
+                    aria-label="Copiar texto"
+                  >
+                    {copiedIndex === i ? (
+                      <><Check className="h-3.5 w-3.5 text-accent" /> Copiado</>
+                    ) : (
+                      <><Copy className="h-3.5 w-3.5" /> Copiar</>
+                    )}
+                  </button>
+                </div>
               </motion.div>
             ))}
           </motion.div>
