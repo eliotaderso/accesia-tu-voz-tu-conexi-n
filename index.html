@@ -3,208 +3,483 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#0f172a" />
-  <meta name="description" content="IncluApp Pro: accesibilidad útil para personas con discapacidad visual, auditiva y del habla." />
   <title>IncluApp Pro</title>
-  <link rel="manifest" href="manifest.json" />
-  <link rel="icon" href="assets/icon-192.png" />
-  <link rel="stylesheet" href="assets/styles.css" />
+  <meta name="description" content="App accesible para personas ciegas, sordas, mudas o con necesidades mixtas." />
+  <meta name="theme-color" content="#0f172a" />
+  <style>
+    :root{
+      --bg:#07111f;
+      --bg2:#0f172a;
+      --card:#111c34;
+      --soft:#1f2a44;
+      --line:rgba(255,255,255,.08);
+      --text:#eef2ff;
+      --muted:#b7c2e1;
+      --brand:#7c9cff;
+      --brand2:#26d0ce;
+      --ok:#27c07d;
+      --warn:#ffbf47;
+      --shadow:0 18px 60px rgba(0,0,0,.35);
+      --radius:24px;
+      --max:1180px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(124,156,255,.18), transparent 28%),
+        radial-gradient(circle at top right, rgba(38,208,206,.14), transparent 24%),
+        linear-gradient(180deg, var(--bg) 0%, var(--bg2) 100%);
+      color:var(--text);
+    }
+    a{text-decoration:none;color:inherit}
+    .wrap{max-width:var(--max);margin:0 auto;padding:0 20px}
+    .nav{
+      position:sticky;top:0;z-index:30;
+      backdrop-filter:blur(18px);
+      background:rgba(7,17,31,.72);
+      border-bottom:1px solid var(--line);
+    }
+    .nav-inner{
+      display:flex;align-items:center;justify-content:space-between;
+      min-height:76px;gap:18px;
+    }
+    .logo{display:flex;gap:14px;align-items:center}
+    .logo-mark{
+      width:44px;height:44px;border-radius:14px;
+      background:linear-gradient(135deg,var(--brand),var(--brand2));
+      display:grid;place-items:center;font-weight:900;color:white;
+      box-shadow:var(--shadow);
+    }
+    .logo-copy b{display:block;font-size:1.02rem}
+    .logo-copy span{display:block;color:var(--muted);font-size:.92rem}
+    .nav-links{display:flex;gap:22px;align-items:center;flex-wrap:wrap}
+    .nav-links a{color:var(--muted)}
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;gap:10px;
+      padding:14px 20px;border-radius:16px;border:1px solid transparent;
+      font-weight:700;transition:.2s ease;cursor:pointer
+    }
+    .btn:hover{transform:translateY(-1px)}
+    .btn-primary{
+      background:linear-gradient(135deg,var(--brand),var(--brand2));
+      color:#07111f;box-shadow:var(--shadow)
+    }
+    .btn-secondary{
+      border-color:var(--line);background:rgba(255,255,255,.03);color:var(--text)
+    }
+    .hero{padding:72px 0 34px}
+    .hero-grid{
+      display:grid;grid-template-columns:1.2fr .8fr;gap:28px;align-items:center
+    }
+    .eyebrow{
+      display:inline-flex;gap:10px;align-items:center;
+      background:rgba(124,156,255,.12);border:1px solid rgba(124,156,255,.18);
+      padding:10px 14px;border-radius:999px;color:#dbe5ff;font-weight:700;font-size:.92rem
+    }
+    h1{
+      font-size:clamp(2.4rem,5vw,4.8rem);line-height:.98;margin:18px 0 18px;
+      letter-spacing:-.03em
+    }
+    .lead{
+      color:var(--muted);font-size:1.14rem;line-height:1.7;max-width:760px
+    }
+    .hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin:28px 0}
+    .hero-stats{
+      display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px
+    }
+    .stat,.card{
+      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+    }
+    .stat{padding:18px}
+    .stat b{font-size:1.4rem;display:block}
+    .stat span{color:var(--muted)}
+    .phone{
+      padding:18px;border-radius:36px;background:#06101d;border:1px solid var(--line);
+      box-shadow:var(--shadow);max-width:390px;margin-left:auto
+    }
+    .phone-screen{
+      border-radius:28px;padding:20px;background:
+        linear-gradient(180deg, rgba(124,156,255,.15), transparent 35%),
+        linear-gradient(180deg, #0b1528, #0a1222);
+      border:1px solid rgba(255,255,255,.06)
+    }
+    .screen-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+    .screen-pill{
+      background:rgba(255,255,255,.06);padding:8px 12px;border-radius:999px;
+      color:#dbe5ff;font-size:.82rem
+    }
+    .screen-box{
+      padding:18px;border-radius:22px;background:rgba(255,255,255,.04);
+      border:1px solid var(--line);margin-bottom:12px
+    }
+    .screen-box h3{margin:0 0 8px;font-size:1.05rem}
+    .screen-box p{margin:0;color:var(--muted);line-height:1.6}
+    .chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+    .chip{
+      padding:10px 12px;border-radius:999px;background:rgba(124,156,255,.12);
+      color:#dbe5ff;border:1px solid rgba(124,156,255,.14);font-weight:700;font-size:.9rem
+    }
+    section{padding:38px 0}
+    .section-head{margin-bottom:20px}
+    .section-head h2{font-size:clamp(1.7rem,3vw,2.6rem);margin:0 0 10px}
+    .section-head p{color:var(--muted);max-width:760px;line-height:1.7}
+    .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .feature{padding:24px}
+    .feature .icon{
+      width:52px;height:52px;border-radius:16px;
+      display:grid;place-items:center;
+      background:linear-gradient(135deg, rgba(124,156,255,.18), rgba(38,208,206,.14));
+      border:1px solid var(--line);font-size:1.3rem;margin-bottom:16px
+    }
+    .feature h3{margin:0 0 10px;font-size:1.12rem}
+    .feature p{margin:0;color:var(--muted);line-height:1.7}
+    .demo-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+    .demo-card{padding:24px}
+    .quick-actions{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+    .quick{
+      padding:16px;border-radius:18px;background:rgba(255,255,255,.04);
+      border:1px solid var(--line);font-weight:700;color:var(--text);cursor:pointer
+    }
+    .quick:hover{background:rgba(255,255,255,.07)}
+    .textarea, .output{
+      width:100%;padding:16px 18px;border-radius:18px;background:#0a1222;color:var(--text);
+      border:1px solid var(--line);font:inherit
+    }
+    .output{min-height:138px}
+    .toolbar{display:flex;gap:12px;flex-wrap:wrap;margin-top:14px}
+    .modes{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+    .mode{
+      padding:11px 16px;border-radius:999px;border:1px solid var(--line);
+      background:rgba(255,255,255,.03);color:var(--text);cursor:pointer;font-weight:700
+    }
+    .mode.active{background:linear-gradient(135deg,var(--brand),var(--brand2));color:#07111f}
+    .pricing{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .price{padding:26px;position:relative}
+    .badge{
+      position:absolute;right:16px;top:16px;
+      padding:8px 10px;border-radius:999px;background:rgba(39,192,125,.14);color:#aaf0cb;font-weight:800;font-size:.78rem
+    }
+    .price h3{margin:0}
+    .price .num{font-size:2rem;font-weight:900;margin:18px 0 8px}
+    .price p,.price li{color:var(--muted);line-height:1.7}
+    .price ul{padding-left:18px}
+    .cta{
+      padding:30px;border-radius:32px;display:flex;justify-content:space-between;align-items:center;gap:20px;
+      background:linear-gradient(135deg, rgba(124,156,255,.16), rgba(38,208,206,.12));
+      border:1px solid rgba(255,255,255,.08)
+    }
+    .footer{padding:32px 0 60px;color:var(--muted)}
+    .small{font-size:.92rem;color:var(--muted)}
+    .install-note{
+      margin-top:10px;color:#c7d4ff;font-size:.92rem
+    }
+
+    body.contrast{
+      --bg:#000;--bg2:#000;--card:#000;--soft:#111;--line:#fff;
+      --text:#fff;--muted:#f2f2f2;--brand:#ffe600;--brand2:#ffffff;
+      background:#000;
+    }
+    body.contrast .btn-primary{color:#000}
+    body.contrast .chip, body.contrast .eyebrow{color:#fff}
+    body.contrast .nav{background:rgba(0,0,0,.9)}
+    @media (max-width: 980px){
+      .hero-grid,.demo-grid,.pricing,.grid-3{grid-template-columns:1fr}
+      .phone{margin:0;max-width:none}
+    }
+    @media (max-width: 700px){
+      .nav-inner{min-height:68px}
+      .nav-links{display:none}
+      .hero{padding-top:42px}
+      .hero-stats,.quick-actions{grid-template-columns:1fr}
+      .cta{flex-direction:column;align-items:flex-start}
+      .btn{width:100%}
+    }
+  </style>
 </head>
 <body>
-  <header class="topbar">
-    <div class="container nav">
-      <div class="brand">
-        <div class="logo">IA</div>
-        <div>
-          <strong>IncluApp Pro</strong>
-          <span>MVP accesible listo para presentar</span>
+  <nav class="nav">
+    <div class="wrap nav-inner">
+      <div class="logo">
+        <div class="logo-mark">IA</div>
+        <div class="logo-copy">
+          <b>IncluApp Pro</b>
+          <span>Accesibilidad útil, clara y presentable</span>
         </div>
       </div>
-      <nav class="navlinks">
+      <div class="nav-links">
         <a href="#funciones">Funciones</a>
-        <a href="#impacto">Impacto</a>
-        <a href="#monetizacion">Monetización</a>
+        <a href="#demo">Demo</a>
+        <a href="#negocio">Monetización</a>
         <a href="#contacto">Contacto</a>
-      </nav>
-      <button id="installBtn" class="btn btn-outline hidden">Instalar app</button>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <div class="eyebrow">MVP accesible • Web profesional • Lista para presentar</div>
+        <h1>Una app pensada para ver, oír, hablar y conectar mejor.</h1>
+        <p class="lead">
+          IncluApp Pro reúne herramientas de accesibilidad en una sola experiencia:
+          lectura en voz alta, comunicación por frases rápidas, alto contraste y una interfaz simple
+          para personas ciegas, sordas, mudas o con necesidades mixtas.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#demo">Probar demo</a>
+          <a class="btn btn-secondary" href="#negocio">Ver modelo de negocio</a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat"><b>3</b><span>modos de uso</span></div>
+          <div class="stat"><b>PWA</b><span>instalable</span></div>
+          <div class="stat"><b>MVP</b><span>para mostrar hoy</span></div>
+        </div>
+      </div>
+
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="screen-head">
+            <strong>Vista previa</strong>
+            <span class="screen-pill">IncluApp Pro</span>
+          </div>
+          <div class="screen-box">
+            <h3>Modo Visión</h3>
+            <p>Botones grandes, alto contraste, voz guiada y respuestas rápidas.</p>
+          </div>
+          <div class="screen-box">
+            <h3>Función destacada</h3>
+            <p>Comunicación instantánea: toca una frase y la app la reproduce con voz o la muestra en pantalla.</p>
+          </div>
+          <div class="chips">
+            <span class="chip">Visión</span>
+            <span class="chip">Audición</span>
+            <span class="chip">Mixto</span>
+          </div>
+        </div>
+      </div>
     </div>
   </header>
 
-  <main>
-    <section class="hero">
-      <div class="container hero-grid">
-        <div>
-          <span class="tag">Tecnología inclusiva · Web + PWA</span>
-          <h1>Una app pensada para ver, oír, hablar y conectar mejor.</h1>
-          <p class="lead">
-            IncluApp Pro reúne herramientas de accesibilidad en una sola experiencia:
-            lectura en voz alta, comunicación por frases rápidas, contraste elevado,
-            vibración guiada y acceso simple para personas ciegas, sordas, mudas o con necesidades mixtas.
-          </p>
-          <div class="hero-actions">
-            <a class="btn" href="#demo">Probar demo</a>
-            <a class="btn btn-outline" href="#monetizacion">Ver modelo de negocio</a>
-          </div>
-          <div class="hero-metrics">
-            <div><strong>3</strong><span>modos de uso</span></div>
-            <div><strong>PWA</strong><span>instalable</span></div>
-            <div><strong>MVP</strong><span>para mostrar hoy</span></div>
+  <section id="funciones">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Funciones útiles y fáciles de entender</h2>
+        <p>Diseñada para una demo potente: transmite valor social, experiencia práctica y potencial de monetización sin necesidad de backend complejo.</p>
+      </div>
+      <div class="grid-3">
+        <div class="card feature">
+          <div class="icon">🔊</div>
+          <h3>Lectura en voz alta</h3>
+          <p>Convierte frases y mensajes en audio con un toque. Ideal para apoyar la comunicación inmediata.</p>
+        </div>
+        <div class="card feature">
+          <div class="icon">👁️</div>
+          <h3>Alto contraste</h3>
+          <p>Modo visual reforzado con textos más claros y estructura simple para facilitar el uso diario.</p>
+        </div>
+        <div class="card feature">
+          <div class="icon">💬</div>
+          <h3>Frases rápidas</h3>
+          <p>Respuestas ya preparadas para pedir ayuda, orientarse o comunicarse sin teclear demasiado.</p>
+        </div>
+        <div class="card feature">
+          <div class="icon">📳</div>
+          <h3>Vibración guiada</h3>
+          <p>Feedback háptico para confirmar acciones. Útil en entornos con ruido o para apoyo sensorial.</p>
+        </div>
+        <div class="card feature">
+          <div class="icon">📱</div>
+          <h3>Instalable</h3>
+          <p>Puede usarse como web y como app añadida a la pantalla principal del móvil.</p>
+        </div>
+        <div class="card feature">
+          <div class="icon">🌍</div>
+          <h3>Escalable</h3>
+          <p>Base perfecta para añadir IA visual, traducción, OCR y servicios premium en una fase siguiente.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="demo">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Demo funcional para enseñar hoy</h2>
+        <p>Puedes interactuar, probar la lectura en voz, cambiar a alto contraste y mostrar cómo responder rápido en una situación real.</p>
+      </div>
+
+      <div class="modes">
+        <button class="mode active" data-mode="vision">Modo Visión</button>
+        <button class="mode" data-mode="audicion">Modo Audición</button>
+        <button class="mode" data-mode="mixto">Modo Mixto</button>
+        <button class="mode" id="contrastToggle">Alto contraste</button>
+      </div>
+
+      <div class="demo-grid" style="margin-top:18px;">
+        <div class="card demo-card">
+          <h3>Frases rápidas</h3>
+          <p class="small">Toca una frase y se leerá en voz alta o se mostrará en pantalla.</p>
+          <div class="quick-actions" style="margin-top:16px;">
+            <button class="quick" data-say="Necesito ayuda, por favor.">Necesito ayuda</button>
+            <button class="quick" data-say="No puedo oírte bien. Háblame por escrito.">Háblame por escrito</button>
+            <button class="quick" data-say="¿Puedes acompañarme un momento?">Acompáñame</button>
+            <button class="quick" data-say="Estoy bien, gracias.">Estoy bien</button>
           </div>
         </div>
-        <div class="hero-card">
-          <div class="screen">
-            <div class="screen-top">
-              <span class="dot"></span><span class="dot"></span><span class="dot"></span>
-            </div>
-            <div class="screen-body">
-              <div class="mode-selector">
-                <button class="chip active" data-mode="visual">Visión</button>
-                <button class="chip" data-mode="auditivo">Audición</button>
-                <button class="chip" data-mode="mixto">Mixto</button>
-              </div>
-              <div id="modePanel" class="mode-panel">
-                <h3>Modo Visión</h3>
-                <p>Botones grandes, alto contraste, voz guiada y respuestas rápidas.</p>
-              </div>
-              <div class="quick-card">
-                <span class="mini-tag">Función destacada</span>
-                <h4>Comunicación instantánea</h4>
-                <p>Toca una frase y la app la reproduce con voz o la muestra en pantalla.</p>
-              </div>
-            </div>
+
+        <div class="card demo-card">
+          <h3>Texto a voz</h3>
+          <p class="small">Escribe o pega un mensaje y pulsa reproducir.</p>
+          <textarea id="ttsInput" class="textarea" rows="5">Hola. Esta es una demo profesional de IncluApp Pro.</textarea>
+          <div class="toolbar">
+            <button class="btn btn-primary" id="speakBtn" type="button">Reproducir voz</button>
+            <button class="btn btn-secondary" id="stopBtn" type="button">Detener</button>
           </div>
         </div>
       </div>
-    </section>
 
-    <section id="funciones" class="section">
-      <div class="container">
-        <div class="section-head">
-          <span class="tag">Qué hace</span>
-          <h2>Funciones útiles y fáciles de entender</h2>
-        </div>
-        <div class="cards">
-          <article class="card">
-            <h3>Lectura en voz alta</h3>
-            <p>La app lee mensajes y textos con una voz clara usando funciones del navegador.</p>
-          </article>
-          <article class="card">
-            <h3>Frases rápidas</h3>
-            <p>Botones preparados para pedir ayuda, avisar necesidades o responder sin escribir.</p>
-          </article>
-          <article class="card">
-            <h3>Modo alto contraste</h3>
-            <p>Interfaz reforzada para mejorar visibilidad y reducir fricción al usarla.</p>
-          </article>
-          <article class="card">
-            <h3>Vibración guiada</h3>
-            <p>Feedback táctil cuando el dispositivo lo permite, útil en entornos ruidosos.</p>
-          </article>
-          <article class="card">
-            <h3>Pantalla grande y simple</h3>
-            <p>Diseño limpio, botones amplios y navegación directa para reducir errores.</p>
-          </article>
-          <article class="card">
-            <h3>Instalable como app</h3>
-            <p>Se puede guardar en el móvil como una aplicación sin pasar por tiendas al principio.</p>
-          </article>
-        </div>
+      <div class="card demo-card" style="margin-top:18px;">
+        <h3>Panel visible en pantalla</h3>
+        <p class="small">Esto permite enseñar la comunicación visual sin depender de audio.</p>
+        <div id="output" class="output" style="margin-top:14px;">Aquí aparecerán las frases seleccionadas.</div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <section id="demo" class="section alt">
-      <div class="container demo-grid">
-        <div class="demo-box">
-          <div class="section-head left">
-            <span class="tag">Demo</span>
-            <h2>Prueba la experiencia</h2>
-          </div>
-          <label class="label" for="texto">Texto para leer</label>
-          <textarea id="texto" rows="5">Hola. Esta demo muestra cómo una app accesible puede ayudar a comunicarse mejor en el día a día.</textarea>
-          <div class="button-row">
-            <button id="speakBtn" class="btn">Leer en voz alta</button>
-            <button id="stopBtn" class="btn btn-outline">Detener voz</button>
-            <button id="contrastBtn" class="btn btn-outline">Alto contraste</button>
-          </div>
-        </div>
-        <div class="demo-box">
-          <div class="section-head left">
-            <span class="tag">Comunicación</span>
-            <h2>Frases rápidas</h2>
-          </div>
-          <div class="quick-grid" id="quickGrid"></div>
-        </div>
+  <section id="negocio">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Modelo de negocio realista</h2>
+        <p>Una base gratuita para adopción y una capa premium para monetizar. Ideal para presentar como proyecto con impacto y crecimiento.</p>
       </div>
-    </section>
-
-    <section id="impacto" class="section">
-      <div class="container impact-grid">
-        <div>
-          <div class="section-head left">
-            <span class="tag">Impacto</span>
-            <h2>Por qué tiene potencial real</h2>
-          </div>
-          <ul class="impact-list">
-            <li>Resuelve una necesidad social clara.</li>
-            <li>Se puede presentar como MVP, ONG, startup o proyecto educativo.</li>
-            <li>Es ampliable con IA para descripción de imágenes, subtítulos y asistencia contextual.</li>
-            <li>Tiene una narrativa fuerte para premios, ayudas y colaboraciones.</li>
+      <div class="pricing">
+        <div class="card price">
+          <h3>Gratis</h3>
+          <div class="num">0 €</div>
+          <p>Versión abierta para uso diario y difusión del producto.</p>
+          <ul>
+            <li>Frases rápidas</li>
+            <li>Texto a voz</li>
+            <li>Alto contraste</li>
           </ul>
         </div>
-        <div class="stats">
-          <div class="stat"><strong>Social</strong><span>alto valor inclusivo</span></div>
-          <div class="stat"><strong>Escalable</strong><span>módulos y servicios premium</span></div>
-          <div class="stat"><strong>Presentable</strong><span>diseño visual profesional</span></div>
+        <div class="card price">
+          <div class="badge">Más vendible</div>
+          <h3>Premium</h3>
+          <div class="num">4,99 €/mes</div>
+          <p>Para usuarios que quieran más funciones y asistencia inteligente.</p>
+          <ul>
+            <li>OCR y reconocimiento de objetos</li>
+            <li>IA para describir escenas</li>
+            <li>Historial y favoritos</li>
+          </ul>
+        </div>
+        <div class="card price">
+          <h3>B2B / Centros</h3>
+          <div class="num">Desde 49 €</div>
+          <p>Licencias para asociaciones, colegios, clínicas o residencias.</p>
+          <ul>
+            <li>Panel administrable</li>
+            <li>Perfiles adaptados</li>
+            <li>Soporte y personalización</li>
+          </ul>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <section id="monetizacion" class="section alt">
-      <div class="container">
-        <div class="section-head">
-          <span class="tag">Negocio</span>
-          <h2>Cómo monetizarla de verdad</h2>
-        </div>
-        <div class="pricing">
-          <article class="price-card">
-            <h3>Freemium</h3>
-            <p>Acceso gratis a lo básico y funciones avanzadas por suscripción.</p>
-            <strong>4,99€/mes</strong>
-          </article>
-          <article class="price-card featured">
-            <span class="badge">Más sólida</span>
-            <h3>B2B / Colegios / Centros</h3>
-            <p>Licencia para asociaciones, centros educativos, clínicas o ayuntamientos.</p>
-            <strong>49–199€/mes</strong>
-          </article>
-          <article class="price-card">
-            <h3>Patrocinios y ayudas</h3>
-            <p>Acuerdos con fundaciones, marcas con RSC y subvenciones de innovación social.</p>
-            <strong>Variable</strong>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section id="contacto" class="section cta">
-      <div class="container cta-box">
+  <section id="contacto">
+    <div class="wrap">
+      <div class="cta">
         <div>
-          <span class="tag">Siguiente paso</span>
-          <h2>Lista para enseñar, mejorar y convertir en app real.</h2>
-          <p>Puedes usar esta versión como demo pública, portfolio, pitch o base para un desarrollo más avanzado.</p>
+          <h2 style="margin:0 0 10px;">Lista para enseñar como proyecto serio</h2>
+          <p class="small" style="max-width:760px;">
+            Puedes presentarla como MVP social, startup de accesibilidad o base para una app con IA integrada.
+          </p>
+          <div class="install-note" id="installNote">En iPhone puedes usar “Compartir → Añadir a pantalla de inicio” para instalarla.</div>
         </div>
-        <a class="btn" href="mailto:contacto@incluapp.demo">Contactar</a>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;">
+          <a class="btn btn-primary" href="mailto:contacto@incluapp.pro">Contactar</a>
+          <button class="btn btn-secondary" id="installBtn" type="button">Instalar app</button>
+        </div>
       </div>
-    </section>
-  </main>
+    </div>
+  </section>
 
   <footer class="footer">
-    <div class="container footer-row">
-      <p>© 2026 IncluApp Pro · Demo MVP accesible</p>
-      <p>Hecha para presentar una idea con impacto real.</p>
+    <div class="wrap">
+      IncluApp Pro · MVP accesible listo para presentar
     </div>
   </footer>
 
-  <script src="assets/app.js"></script>
+  <script>
+    const output = document.getElementById('output');
+    const ttsInput = document.getElementById('ttsInput');
+    const speakBtn = document.getElementById('speakBtn');
+    const stopBtn = document.getElementById('stopBtn');
+    const contrastToggle = document.getElementById('contrastToggle');
+    const installBtn = document.getElementById('installBtn');
+    let deferredPrompt = null;
+
+    function speak(text){
+      output.textContent = text;
+      if (!('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+      const utter = new SpeechSynthesisUtterance(text);
+      utter.lang = 'es-ES';
+      utter.rate = 0.95;
+      window.speechSynthesis.speak(utter);
+    }
+
+    document.querySelectorAll('[data-say]').forEach(btn=>{
+      btn.addEventListener('click', ()=> speak(btn.dataset.say));
+    });
+
+    speakBtn.addEventListener('click', ()=> speak(ttsInput.value.trim() || 'Escribe un texto para reproducir.'));
+    stopBtn.addEventListener('click', ()=> window.speechSynthesis && window.speechSynthesis.cancel());
+
+    contrastToggle.addEventListener('click', ()=>{
+      document.body.classList.toggle('contrast');
+    });
+
+    document.querySelectorAll('.mode').forEach(btn=>{
+      if (btn.id === 'contrastToggle') return;
+      btn.addEventListener('click', ()=>{
+        document.querySelectorAll('.mode').forEach(b=> b.classList.remove('active'));
+        btn.classList.add('active');
+        const mode = btn.dataset.mode;
+        if(mode === 'vision'){
+          output.textContent = 'Modo visión activo: interfaz clara, contraste y lectura guiada.';
+        }else if(mode === 'audicion'){
+          output.textContent = 'Modo audición activo: apoyo visual, texto claro y comunicación escrita.';
+        }else{
+          output.textContent = 'Modo mixto activo: combinación de apoyo visual, textual y voz.';
+        }
+      });
+    });
+
+    window.addEventListener('beforeinstallprompt', (e)=>{
+      e.preventDefault();
+      deferredPrompt = e;
+      installBtn.style.display = 'inline-flex';
+      document.getElementById('installNote').textContent = 'La app puede instalarse desde el navegador.';
+    });
+
+    installBtn.addEventListener('click', async ()=>{
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        await deferredPrompt.userChoice;
+        deferredPrompt = null;
+      } else {
+        alert('En iPhone: pulsa Compartir y luego “Añadir a pantalla de inicio”.');
+      }
+    });
+  </script>
 </body>
 </html>
