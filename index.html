@@ -1,110 +1,210 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#0f172a" />
-  <meta name="description" content="App inclusiva para personas ciegas, sordas, mudas o con necesidades mixtas." />
-  <title>IncluApp</title>
+  <meta name="description" content="IncluApp Pro: accesibilidad útil para personas con discapacidad visual, auditiva y del habla." />
+  <title>IncluApp Pro</title>
   <link rel="manifest" href="manifest.json" />
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="assets/icon-192.png" />
+  <link rel="stylesheet" href="assets/styles.css" />
 </head>
 <body>
-  <header class="hero">
-    <div class="wrap">
-      <p class="badge">MVP accesible</p>
-      <h1>IncluApp</h1>
-      <p class="lead">Una app pensada para facilitar la comunicación, la orientación y el acceso a funciones esenciales en personas ciegas, sordas, mudas o con necesidades combinadas.</p>
-      <div class="hero-actions">
-        <a class="btn primary" href="#modos">Ver funciones</a>
-        <button class="btn secondary" id="installBtn" hidden>Instalar app</button>
+  <header class="topbar">
+    <div class="container nav">
+      <div class="brand">
+        <div class="logo">IA</div>
+        <div>
+          <strong>IncluApp Pro</strong>
+          <span>MVP accesible listo para presentar</span>
+        </div>
       </div>
+      <nav class="navlinks">
+        <a href="#funciones">Funciones</a>
+        <a href="#impacto">Impacto</a>
+        <a href="#monetizacion">Monetización</a>
+        <a href="#contacto">Contacto</a>
+      </nav>
+      <button id="installBtn" class="btn btn-outline hidden">Instalar app</button>
     </div>
   </header>
 
-  <main class="wrap">
-    <section class="grid-3 stats">
-      <article class="card">
-        <h2>Modo visión</h2>
-        <p>Lectura en voz alta, botones grandes, alto contraste y acciones por voz.</p>
-      </article>
-      <article class="card">
-        <h2>Modo audición</h2>
-        <p>Texto en pantalla, avisos visuales y frases rápidas para comunicación.</p>
-      </article>
-      <article class="card">
-        <h2>Modo mixto</h2>
-        <p>Combina pictogramas, texto, vibración y lectura automatizada.</p>
-      </article>
-    </section>
-
-    <section id="modos" class="section">
-      <div class="section-head">
-        <h2>Funciones principales</h2>
-        <p>Preparada como demo funcional y lista para enseñar o subir a GitHub Pages.</p>
-      </div>
-
-      <div class="grid-2">
-        <article class="card tool-card">
-          <h3>Comunicación rápida</h3>
-          <label for="quickText">Escribe un mensaje</label>
-          <textarea id="quickText" rows="4" placeholder="Necesito ayuda / Estoy bien / Llama a un familiar"></textarea>
-          <div class="actions">
-            <button class="btn primary" id="speakBtn">Leer en voz alta</button>
-            <button class="btn secondary" id="copyBtn">Copiar</button>
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <span class="tag">Tecnología inclusiva · Web + PWA</span>
+          <h1>Una app pensada para ver, oír, hablar y conectar mejor.</h1>
+          <p class="lead">
+            IncluApp Pro reúne herramientas de accesibilidad en una sola experiencia:
+            lectura en voz alta, comunicación por frases rápidas, contraste elevado,
+            vibración guiada y acceso simple para personas ciegas, sordas, mudas o con necesidades mixtas.
+          </p>
+          <div class="hero-actions">
+            <a class="btn" href="#demo">Probar demo</a>
+            <a class="btn btn-outline" href="#monetizacion">Ver modelo de negocio</a>
           </div>
-        </article>
-
-        <article class="card tool-card">
-          <h3>Frases urgentes</h3>
-          <div class="chips" id="quickPhrases">
-            <button class="chip">Necesito ayuda</button>
-            <button class="chip">Llama al 112</button>
-            <button class="chip">No oigo bien</button>
-            <button class="chip">No puedo hablar</button>
-            <button class="chip">Acompáñame, por favor</button>
-            <button class="chip">Estoy desorientado</button>
+          <div class="hero-metrics">
+            <div><strong>3</strong><span>modos de uso</span></div>
+            <div><strong>PWA</strong><span>instalable</span></div>
+            <div><strong>MVP</strong><span>para mostrar hoy</span></div>
           </div>
-        </article>
+        </div>
+        <div class="hero-card">
+          <div class="screen">
+            <div class="screen-top">
+              <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+            </div>
+            <div class="screen-body">
+              <div class="mode-selector">
+                <button class="chip active" data-mode="visual">Visión</button>
+                <button class="chip" data-mode="auditivo">Audición</button>
+                <button class="chip" data-mode="mixto">Mixto</button>
+              </div>
+              <div id="modePanel" class="mode-panel">
+                <h3>Modo Visión</h3>
+                <p>Botones grandes, alto contraste, voz guiada y respuestas rápidas.</p>
+              </div>
+              <div class="quick-card">
+                <span class="mini-tag">Función destacada</span>
+                <h4>Comunicación instantánea</h4>
+                <p>Toca una frase y la app la reproduce con voz o la muestra en pantalla.</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
-    <section class="section">
-      <div class="grid-2">
-        <article class="card tool-card">
-          <h3>Modo alto contraste</h3>
-          <p>Activa una vista con mayor legibilidad para lectura rápida.</p>
-          <button class="btn primary" id="contrastBtn">Activar / desactivar</button>
-        </article>
-
-        <article class="card tool-card">
-          <h3>Linterna de emergencia</h3>
-          <p>Simulación visual para llamadas de atención en lugares con ruido.</p>
-          <button class="btn secondary" id="flashBtn">Parpadeo visual</button>
-        </article>
+    <section id="funciones" class="section">
+      <div class="container">
+        <div class="section-head">
+          <span class="tag">Qué hace</span>
+          <h2>Funciones útiles y fáciles de entender</h2>
+        </div>
+        <div class="cards">
+          <article class="card">
+            <h3>Lectura en voz alta</h3>
+            <p>La app lee mensajes y textos con una voz clara usando funciones del navegador.</p>
+          </article>
+          <article class="card">
+            <h3>Frases rápidas</h3>
+            <p>Botones preparados para pedir ayuda, avisar necesidades o responder sin escribir.</p>
+          </article>
+          <article class="card">
+            <h3>Modo alto contraste</h3>
+            <p>Interfaz reforzada para mejorar visibilidad y reducir fricción al usarla.</p>
+          </article>
+          <article class="card">
+            <h3>Vibración guiada</h3>
+            <p>Feedback táctil cuando el dispositivo lo permite, útil en entornos ruidosos.</p>
+          </article>
+          <article class="card">
+            <h3>Pantalla grande y simple</h3>
+            <p>Diseño limpio, botones amplios y navegación directa para reducir errores.</p>
+          </article>
+          <article class="card">
+            <h3>Instalable como app</h3>
+            <p>Se puede guardar en el móvil como una aplicación sin pasar por tiendas al principio.</p>
+          </article>
+        </div>
       </div>
     </section>
 
-    <section class="section">
-      <article class="card">
-        <h2>Cómo monetizarla</h2>
-        <ul>
-          <li>Versión premium para familias y cuidadores.</li>
-          <li>Panel para centros, colegios y asociaciones.</li>
-          <li>Acuerdos con ayuntamientos, clínicas y residencias.</li>
-          <li>Botón de donaciones o patrocinio social.</li>
-        </ul>
-      </article>
+    <section id="demo" class="section alt">
+      <div class="container demo-grid">
+        <div class="demo-box">
+          <div class="section-head left">
+            <span class="tag">Demo</span>
+            <h2>Prueba la experiencia</h2>
+          </div>
+          <label class="label" for="texto">Texto para leer</label>
+          <textarea id="texto" rows="5">Hola. Esta demo muestra cómo una app accesible puede ayudar a comunicarse mejor en el día a día.</textarea>
+          <div class="button-row">
+            <button id="speakBtn" class="btn">Leer en voz alta</button>
+            <button id="stopBtn" class="btn btn-outline">Detener voz</button>
+            <button id="contrastBtn" class="btn btn-outline">Alto contraste</button>
+          </div>
+        </div>
+        <div class="demo-box">
+          <div class="section-head left">
+            <span class="tag">Comunicación</span>
+            <h2>Frases rápidas</h2>
+          </div>
+          <div class="quick-grid" id="quickGrid"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="impacto" class="section">
+      <div class="container impact-grid">
+        <div>
+          <div class="section-head left">
+            <span class="tag">Impacto</span>
+            <h2>Por qué tiene potencial real</h2>
+          </div>
+          <ul class="impact-list">
+            <li>Resuelve una necesidad social clara.</li>
+            <li>Se puede presentar como MVP, ONG, startup o proyecto educativo.</li>
+            <li>Es ampliable con IA para descripción de imágenes, subtítulos y asistencia contextual.</li>
+            <li>Tiene una narrativa fuerte para premios, ayudas y colaboraciones.</li>
+          </ul>
+        </div>
+        <div class="stats">
+          <div class="stat"><strong>Social</strong><span>alto valor inclusivo</span></div>
+          <div class="stat"><strong>Escalable</strong><span>módulos y servicios premium</span></div>
+          <div class="stat"><strong>Presentable</strong><span>diseño visual profesional</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="monetizacion" class="section alt">
+      <div class="container">
+        <div class="section-head">
+          <span class="tag">Negocio</span>
+          <h2>Cómo monetizarla de verdad</h2>
+        </div>
+        <div class="pricing">
+          <article class="price-card">
+            <h3>Freemium</h3>
+            <p>Acceso gratis a lo básico y funciones avanzadas por suscripción.</p>
+            <strong>4,99€/mes</strong>
+          </article>
+          <article class="price-card featured">
+            <span class="badge">Más sólida</span>
+            <h3>B2B / Colegios / Centros</h3>
+            <p>Licencia para asociaciones, centros educativos, clínicas o ayuntamientos.</p>
+            <strong>49–199€/mes</strong>
+          </article>
+          <article class="price-card">
+            <h3>Patrocinios y ayudas</h3>
+            <p>Acuerdos con fundaciones, marcas con RSC y subvenciones de innovación social.</p>
+            <strong>Variable</strong>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="contacto" class="section cta">
+      <div class="container cta-box">
+        <div>
+          <span class="tag">Siguiente paso</span>
+          <h2>Lista para enseñar, mejorar y convertir en app real.</h2>
+          <p>Puedes usar esta versión como demo pública, portfolio, pitch o base para un desarrollo más avanzado.</p>
+        </div>
+        <a class="btn" href="mailto:contacto@incluapp.demo">Contactar</a>
+      </div>
     </section>
   </main>
 
   <footer class="footer">
-    <div class="wrap footer-inner">
-      <p>IncluApp · Demo lista para GitHub Pages</p>
-      <a href="#top">Subir</a>
+    <div class="container footer-row">
+      <p>© 2026 IncluApp Pro · Demo MVP accesible</p>
+      <p>Hecha para presentar una idea con impacto real.</p>
     </div>
   </footer>
 
-  <script src="app.js"></script>
+  <script src="assets/app.js"></script>
 </body>
 </html>

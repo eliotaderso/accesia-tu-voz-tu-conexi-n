@@ -1,11 +1,21 @@
 {
-  "name": "IncluApp",
+  "name": "IncluApp Pro",
   "short_name": "IncluApp",
   "start_url": "./",
   "display": "standalone",
-  "background_color": "#08111f",
+  "background_color": "#07111f",
   "theme_color": "#0f172a",
-  "lang": "es",
-  "description": "Demo accesible lista para GitHub Pages.",
-  "icons": []
+  "description": "MVP accesible con lectura en voz alta, frases rápidas y alto contraste.",
+  "icons": [
+    {
+      "src": "assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
 }
