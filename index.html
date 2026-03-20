@@ -3,220 +3,310 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>IncluApp Pro</title>
-  <meta name="description" content="App accesible para personas ciegas, sordas, mudas o con necesidades mixtas." />
-  <meta name="theme-color" content="#0f172a" />
+  <title>IncluApp</title>
+  <meta name="theme-color" content="#ff7eb6" />
+  <meta name="description" content="App accesible, humana y alegre para comunicarse, orientarse y sentirse acompañado." />
+  <link rel="manifest" href="./manifest.json" />
   <style>
     :root{
-      --bg:#07111f;
-      --bg2:#0f172a;
-      --card:#111c34;
-      --soft:#1f2a44;
-      --line:rgba(255,255,255,.08);
-      --text:#eef2ff;
-      --muted:#b7c2e1;
-      --brand:#7c9cff;
-      --brand2:#26d0ce;
-      --ok:#27c07d;
-      --warn:#ffbf47;
-      --shadow:0 18px 60px rgba(0,0,0,.35);
-      --radius:24px;
+      --bg:#fff7fb;
+      --bg2:#fffef7;
+      --card:#ffffff;
+      --text:#213047;
+      --muted:#667792;
+      --line:rgba(33,48,71,.10);
+      --pink:#ff7eb6;
+      --yellow:#ffd166;
+      --blue:#7dd3fc;
+      --mint:#73e2a7;
+      --purple:#b69cff;
+      --peach:#ffb38a;
+      --shadow:0 18px 45px rgba(92, 110, 144, .16);
+      --radius:26px;
+      --radius-sm:18px;
       --max:1180px;
     }
     *{box-sizing:border-box}
     html{scroll-behavior:smooth}
     body{
       margin:0;
-      font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-      background:
-        radial-gradient(circle at top left, rgba(124,156,255,.18), transparent 28%),
-        radial-gradient(circle at top right, rgba(38,208,206,.14), transparent 24%),
-        linear-gradient(180deg, var(--bg) 0%, var(--bg2) 100%);
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
       color:var(--text);
+      background:
+        radial-gradient(circle at 0% 0%, rgba(255,126,182,.18), transparent 24%),
+        radial-gradient(circle at 100% 0%, rgba(125,211,252,.25), transparent 25%),
+        radial-gradient(circle at 50% 100%, rgba(255,209,102,.20), transparent 22%),
+        linear-gradient(180deg, var(--bg), var(--bg2));
+      min-height:100vh;
+      overflow-x:hidden;
     }
-    a{text-decoration:none;color:inherit}
-    .wrap{max-width:var(--max);margin:0 auto;padding:0 20px}
+    body.contrast{
+      --bg:#000;
+      --bg2:#000;
+      --card:#090909;
+      --text:#fff;
+      --muted:#f2f2f2;
+      --line:#fff;
+      --pink:#ffe600;
+      --yellow:#ffffff;
+      --blue:#ffe600;
+      --mint:#ffffff;
+      --purple:#ffe600;
+      --peach:#ffffff;
+    }
+    body.large-text{font-size:18px}
+    .splash{
+      position:fixed; inset:0; z-index:999;
+      background:
+        radial-gradient(circle at 50% 35%, rgba(255,255,255,.22), transparent 26%),
+        linear-gradient(135deg, #ff7eb6, #ffd166 45%, #7dd3fc 75%, #73e2a7);
+      display:grid; place-items:center;
+      animation:hideSplash .8s ease 2.5s forwards;
+    }
+    .splash-box{
+      text-align:center; color:white; padding:20px; width:min(92vw,760px);
+      animation:popIn .8s ease forwards;
+      text-shadow:0 8px 25px rgba(0,0,0,.15);
+    }
+    .logo{
+      width:90px;height:90px;margin:0 auto 18px;border-radius:28px;
+      background:rgba(255,255,255,.28); backdrop-filter:blur(10px);
+      border:1px solid rgba(255,255,255,.38);
+      display:grid; place-items:center; font-size:2rem; font-weight:900;
+      box-shadow:0 18px 45px rgba(0,0,0,.16);
+    }
+    .splash h1{
+      margin:0; font-size:clamp(2.4rem,7vw,5rem); line-height:.93; letter-spacing:-.05em;
+    }
+    .splash p{
+      margin:14px auto 0; max-width:620px; font-size:clamp(1rem,2.3vw,1.28rem); line-height:1.7;
+    }
+    .loader{
+      width:min(300px,70vw); height:8px; border-radius:999px; overflow:hidden;
+      background:rgba(255,255,255,.30); margin:24px auto 0;
+    }
+    .loader span{
+      display:block; height:100%; width:0%;
+      background:white; animation:fill 2.2s ease .15s forwards;
+    }
+    @keyframes fill{to{width:100%}}
+    @keyframes popIn{from{opacity:0; transform:translateY(16px) scale(.98)} to{opacity:1; transform:none}}
+    @keyframes hideSplash{to{opacity:0; visibility:hidden; pointer-events:none}}
+
+    .wrap{width:min(var(--max),calc(100% - 28px)); margin:0 auto}
     .nav{
-      position:sticky;top:0;z-index:30;
-      backdrop-filter:blur(18px);
-      background:rgba(7,17,31,.72);
+      position:sticky; top:0; z-index:100;
+      backdrop-filter:blur(16px);
+      background:rgba(255,255,255,.72);
       border-bottom:1px solid var(--line);
     }
+    body.contrast .nav{background:rgba(0,0,0,.85)}
     .nav-inner{
-      display:flex;align-items:center;justify-content:space-between;
-      min-height:76px;gap:18px;
+      min-height:74px; display:flex; align-items:center; justify-content:space-between; gap:18px;
     }
-    .logo{display:flex;gap:14px;align-items:center}
-    .logo-mark{
-      width:44px;height:44px;border-radius:14px;
-      background:linear-gradient(135deg,var(--brand),var(--brand2));
-      display:grid;place-items:center;font-weight:900;color:white;
-      box-shadow:var(--shadow);
+    .brand{display:flex; align-items:center; gap:12px}
+    .brand-mark{
+      width:44px;height:44px;border-radius:16px; display:grid; place-items:center;
+      background:linear-gradient(135deg,var(--pink),var(--yellow));
+      box-shadow:var(--shadow); font-weight:900; color:#fff;
     }
-    .logo-copy b{display:block;font-size:1.02rem}
-    .logo-copy span{display:block;color:var(--muted);font-size:.92rem}
-    .nav-links{display:flex;gap:22px;align-items:center;flex-wrap:wrap}
-    .nav-links a{color:var(--muted)}
-    .btn{
-      display:inline-flex;align-items:center;justify-content:center;gap:10px;
-      padding:14px 20px;border-radius:16px;border:1px solid transparent;
-      font-weight:700;transition:.2s ease;cursor:pointer
-    }
-    .btn:hover{transform:translateY(-1px)}
-    .btn-primary{
-      background:linear-gradient(135deg,var(--brand),var(--brand2));
-      color:#07111f;box-shadow:var(--shadow)
-    }
-    .btn-secondary{
-      border-color:var(--line);background:rgba(255,255,255,.03);color:var(--text)
-    }
-    .hero{padding:72px 0 34px}
-    .hero-grid{
-      display:grid;grid-template-columns:1.2fr .8fr;gap:28px;align-items:center
-    }
+    .brand strong{display:block; letter-spacing:-.02em}
+    .brand span{display:block; color:var(--muted); font-size:.92rem}
+    .nav-links{display:flex; gap:16px; flex-wrap:wrap}
+    .nav-links a{color:var(--muted); text-decoration:none; font-weight:700}
+    .hero{padding:44px 0 26px}
+    .hero-grid{display:grid; grid-template-columns:1.07fr .93fr; gap:22px; align-items:center}
     .eyebrow{
-      display:inline-flex;gap:10px;align-items:center;
-      background:rgba(124,156,255,.12);border:1px solid rgba(124,156,255,.18);
-      padding:10px 14px;border-radius:999px;color:#dbe5ff;font-weight:700;font-size:.92rem
+      display:inline-flex; align-items:center; gap:8px; padding:10px 14px;
+      border-radius:999px; background:#fff; border:1px solid var(--line);
+      box-shadow:var(--shadow); font-weight:800; color:#50627d;
     }
     h1{
-      font-size:clamp(2.4rem,5vw,4.8rem);line-height:.98;margin:18px 0 18px;
-      letter-spacing:-.03em
+      margin:18px 0 14px; font-size:clamp(2.4rem,5vw,5rem); line-height:.92; letter-spacing:-.06em;
     }
     .lead{
-      color:var(--muted);font-size:1.14rem;line-height:1.7;max-width:760px
+      color:var(--muted); line-height:1.8; font-size:1.08rem; max-width:760px;
     }
-    .hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin:28px 0}
-    .hero-stats{
-      display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px
+    .hero-actions{display:flex; gap:12px; flex-wrap:wrap; margin:26px 0 18px}
+    .btn{
+      border:none; border-radius:18px; padding:15px 20px; font-size:1rem; font-weight:900;
+      display:inline-flex; align-items:center; justify-content:center; gap:10px; cursor:pointer;
+      text-decoration:none; transition:.2s ease; box-shadow:var(--shadow);
     }
-    .stat,.card{
-      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
-      border:1px solid var(--line);
-      border-radius:var(--radius);
-      box-shadow:var(--shadow);
+    .btn:hover{transform:translateY(-2px)}
+    .btn-main{background:linear-gradient(135deg,var(--pink),var(--yellow)); color:#fff}
+    .btn-soft{background:#fff; color:var(--text); border:1px solid var(--line)}
+    .hero-mini{
+      display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:16px;
     }
-    .stat{padding:18px}
-    .stat b{font-size:1.4rem;display:block}
-    .stat span{color:var(--muted)}
+    .mini{
+      background:#fff; border:1px solid var(--line); border-radius:20px; padding:16px; box-shadow:var(--shadow);
+    }
+    .mini b{display:block; font-size:1.1rem}
+    .mini span{color:var(--muted); font-size:.95rem}
+    .preview{
+      background:linear-gradient(180deg, rgba(255,255,255,.75), rgba(255,255,255,.95));
+      border:1px solid rgba(255,255,255,.75);
+      border-radius:34px; padding:18px; box-shadow:0 22px 55px rgba(106, 85, 155, .14);
+    }
     .phone{
-      padding:18px;border-radius:36px;background:#06101d;border:1px solid var(--line);
-      box-shadow:var(--shadow);max-width:390px;margin-left:auto
+      border-radius:28px; overflow:hidden; padding:18px;
+      background:
+        radial-gradient(circle at 15% 10%, rgba(255,126,182,.17), transparent 28%),
+        radial-gradient(circle at 85% 15%, rgba(125,211,252,.23), transparent 24%),
+        linear-gradient(180deg, #ffffff, #fff9f2);
+      border:1px solid rgba(33,48,71,.08);
     }
-    .phone-screen{
-      border-radius:28px;padding:20px;background:
-        linear-gradient(180deg, rgba(124,156,255,.15), transparent 35%),
-        linear-gradient(180deg, #0b1528, #0a1222);
-      border:1px solid rgba(255,255,255,.06)
+    .phone-top{display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; font-weight:800}
+    .phone-card{
+      background:rgba(255,255,255,.86); border:1px solid rgba(33,48,71,.08);
+      border-radius:22px; padding:16px; margin-bottom:12px;
     }
-    .screen-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
-    .screen-pill{
-      background:rgba(255,255,255,.06);padding:8px 12px;border-radius:999px;
-      color:#dbe5ff;font-size:.82rem
-    }
-    .screen-box{
-      padding:18px;border-radius:22px;background:rgba(255,255,255,.04);
-      border:1px solid var(--line);margin-bottom:12px
-    }
-    .screen-box h3{margin:0 0 8px;font-size:1.05rem}
-    .screen-box p{margin:0;color:var(--muted);line-height:1.6}
-    .chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+    .phone-card h3{margin:0 0 8px; font-size:1rem}
+    .phone-card p{margin:0; color:var(--muted); line-height:1.7}
+    .chips{display:flex; gap:8px; flex-wrap:wrap; margin-top:10px}
     .chip{
-      padding:10px 12px;border-radius:999px;background:rgba(124,156,255,.12);
-      color:#dbe5ff;border:1px solid rgba(124,156,255,.14);font-weight:700;font-size:.9rem
-    }
-    section{padding:38px 0}
-    .section-head{margin-bottom:20px}
-    .section-head h2{font-size:clamp(1.7rem,3vw,2.6rem);margin:0 0 10px}
-    .section-head p{color:var(--muted);max-width:760px;line-height:1.7}
-    .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-    .feature{padding:24px}
-    .feature .icon{
-      width:52px;height:52px;border-radius:16px;
-      display:grid;place-items:center;
-      background:linear-gradient(135deg, rgba(124,156,255,.18), rgba(38,208,206,.14));
-      border:1px solid var(--line);font-size:1.3rem;margin-bottom:16px
-    }
-    .feature h3{margin:0 0 10px;font-size:1.12rem}
-    .feature p{margin:0;color:var(--muted);line-height:1.7}
-    .demo-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-    .demo-card{padding:24px}
-    .quick-actions{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-    .quick{
-      padding:16px;border-radius:18px;background:rgba(255,255,255,.04);
-      border:1px solid var(--line);font-weight:700;color:var(--text);cursor:pointer
-    }
-    .quick:hover{background:rgba(255,255,255,.07)}
-    .textarea, .output{
-      width:100%;padding:16px 18px;border-radius:18px;background:#0a1222;color:var(--text);
-      border:1px solid var(--line);font:inherit
-    }
-    .output{min-height:138px}
-    .toolbar{display:flex;gap:12px;flex-wrap:wrap;margin-top:14px}
-    .modes{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
-    .mode{
-      padding:11px 16px;border-radius:999px;border:1px solid var(--line);
-      background:rgba(255,255,255,.03);color:var(--text);cursor:pointer;font-weight:700
-    }
-    .mode.active{background:linear-gradient(135deg,var(--brand),var(--brand2));color:#07111f}
-    .pricing{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-    .price{padding:26px;position:relative}
-    .badge{
-      position:absolute;right:16px;top:16px;
-      padding:8px 10px;border-radius:999px;background:rgba(39,192,125,.14);color:#aaf0cb;font-weight:800;font-size:.78rem
-    }
-    .price h3{margin:0}
-    .price .num{font-size:2rem;font-weight:900;margin:18px 0 8px}
-    .price p,.price li{color:var(--muted);line-height:1.7}
-    .price ul{padding-left:18px}
-    .cta{
-      padding:30px;border-radius:32px;display:flex;justify-content:space-between;align-items:center;gap:20px;
-      background:linear-gradient(135deg, rgba(124,156,255,.16), rgba(38,208,206,.12));
-      border:1px solid rgba(255,255,255,.08)
-    }
-    .footer{padding:32px 0 60px;color:var(--muted)}
-    .small{font-size:.92rem;color:var(--muted)}
-    .install-note{
-      margin-top:10px;color:#c7d4ff;font-size:.92rem
+      padding:8px 10px; border-radius:999px; font-size:.88rem; font-weight:800;
+      background:#fff; border:1px solid var(--line); color:#5c6b84;
     }
 
-    body.contrast{
-      --bg:#000;--bg2:#000;--card:#000;--soft:#111;--line:#fff;
-      --text:#fff;--muted:#f2f2f2;--brand:#ffe600;--brand2:#ffffff;
-      background:#000;
+    section{padding:28px 0}
+    .section-head{margin-bottom:16px}
+    .section-head h2{margin:0 0 10px; font-size:clamp(1.8rem,3vw,2.7rem); letter-spacing:-.04em}
+    .section-head p{margin:0; color:var(--muted); line-height:1.75; max-width:760px}
+
+    .cards-3{display:grid; grid-template-columns:repeat(3,1fr); gap:16px}
+    .card{
+      background:rgba(255,255,255,.92); border:1px solid var(--line); border-radius:var(--radius);
+      padding:22px; box-shadow:var(--shadow);
     }
-    body.contrast .btn-primary{color:#000}
-    body.contrast .chip, body.contrast .eyebrow{color:#fff}
-    body.contrast .nav{background:rgba(0,0,0,.9)}
-    @media (max-width: 980px){
-      .hero-grid,.demo-grid,.pricing,.grid-3{grid-template-columns:1fr}
-      .phone{margin:0;max-width:none}
+    .icon{
+      width:56px; height:56px; border-radius:18px; display:grid; place-items:center;
+      margin-bottom:14px; font-size:1.4rem;
+      background:linear-gradient(135deg,var(--pink),var(--blue)); color:#fff;
+      box-shadow:0 12px 24px rgba(125,211,252,.25);
     }
-    @media (max-width: 700px){
-      .nav-inner{min-height:68px}
+    .card h3{margin:0 0 8px}
+    .card p{margin:0; color:var(--muted); line-height:1.75}
+
+    .scenario-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:16px}
+    .scenario{
+      position:relative; overflow:hidden;
+      background:linear-gradient(180deg, #fff, #fff8f0);
+    }
+    .scenario:after{
+      content:""; position:absolute; right:-30px; bottom:-30px; width:130px; height:130px;
+      background:radial-gradient(circle, rgba(255,126,182,.14), transparent 65%);
+      pointer-events:none;
+    }
+    .scenario strong{display:block; margin-bottom:8px; font-size:1.03rem}
+    .tagline{
+      background:linear-gradient(135deg, rgba(255,126,182,.12), rgba(255,209,102,.18));
+      border:1px solid rgba(255,126,182,.12); color:#76556c;
+      padding:14px 18px; border-radius:20px; font-weight:800; display:inline-block; margin-top:14px;
+    }
+
+    .demo-wrap{display:grid; grid-template-columns:.9fr 1.1fr; gap:18px}
+    .mode-row{display:flex; flex-wrap:wrap; gap:10px; margin-bottom:14px}
+    .mode-btn{
+      border:none; border-radius:999px; padding:11px 16px; font-weight:900; cursor:pointer;
+      background:#fff; border:1px solid var(--line); color:var(--text); box-shadow:var(--shadow);
+    }
+    .mode-btn.active{background:linear-gradient(135deg,var(--purple),var(--blue)); color:#fff}
+    .stack{display:grid; gap:14px}
+    .quick-grid{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+    .quick{
+      border:none; border-radius:18px; padding:16px; font-weight:900; text-align:left;
+      background:linear-gradient(180deg, #ffffff, #fffaf4);
+      border:1px solid var(--line); cursor:pointer; color:var(--text);
+      box-shadow:var(--shadow); transition:.2s ease;
+    }
+    .quick:hover{transform:translateY(-2px)}
+    .quick small{display:block; margin-top:6px; color:var(--muted); font-weight:700}
+    textarea{
+      width:100%; min-height:134px; resize:vertical; border:none; outline:none; font:inherit;
+      padding:16px 18px; border-radius:20px; background:#fff; color:var(--text);
+      border:1px solid var(--line); box-shadow:var(--shadow); line-height:1.7;
+    }
+    .toolbar{display:flex; gap:10px; flex-wrap:wrap; margin-top:12px}
+    .toolbar .btn{box-shadow:none}
+    .output{
+      min-height:110px; background:linear-gradient(180deg, #fff, #fff8f8); border:1px dashed rgba(255,126,182,.28);
+      border-radius:22px; padding:20px; display:flex; align-items:center; justify-content:center; text-align:center;
+      font-size:1.15rem; line-height:1.7; color:#394960;
+    }
+    .assist{
+      display:grid; grid-template-columns:1fr 1fr; gap:12px;
+    }
+    .tiny{
+      background:rgba(255,255,255,.86); border:1px solid var(--line); border-radius:18px; padding:16px;
+    }
+    .tiny b{display:block; margin-bottom:6px}
+    .tiny span{display:block; color:var(--muted); line-height:1.6}
+
+    .free-paid{
+      display:grid; grid-template-columns:1.08fr .92fr; gap:16px;
+    }
+    .free-list{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+    .pill{
+      padding:14px 16px; border-radius:18px; background:#fff; border:1px solid var(--line);
+      font-weight:800; color:#4c5d76; box-shadow:var(--shadow);
+    }
+    .paid-mini{
+      display:grid; gap:10px;
+    }
+    .paid-note{
+      background:linear-gradient(135deg, rgba(182,156,255,.15), rgba(125,211,252,.15));
+      border:1px solid rgba(182,156,255,.18); border-radius:20px; padding:16px;
+      color:#4e5870; line-height:1.7;
+    }
+    .paid-note strong{display:block; margin-bottom:4px}
+    .impact{
+      display:grid; grid-template-columns:1fr 1fr; gap:16px;
+    }
+    .quote{
+      font-size:1.24rem; font-weight:900; line-height:1.7; letter-spacing:-.02em;
+    }
+
+    .reveal{opacity:0; transform:translateY(22px); transition:all .7s ease}
+    .reveal.show{opacity:1; transform:none}
+
+    @media (max-width:980px){
+      .hero-grid,.cards-3,.scenario-grid,.demo-wrap,.free-paid,.impact{grid-template-columns:1fr}
+    }
+    @media (max-width:740px){
       .nav-links{display:none}
-      .hero{padding-top:42px}
-      .hero-stats,.quick-actions{grid-template-columns:1fr}
-      .cta{flex-direction:column;align-items:flex-start}
+      .hero-mini,.free-list,.assist,.quick-grid{grid-template-columns:1fr}
+      .toolbar,.hero-actions{flex-direction:column}
       .btn{width:100%}
+      .hero{padding-top:28px}
     }
   </style>
 </head>
 <body>
+  <div class="splash" id="splash">
+    <div class="splash-box">
+      <div class="logo">IA</div>
+      <h1>No es solo una app.<br>Es ayuda de verdad.</h1>
+      <p>Para pedir ayuda, hacerse entender y sentirse acompañado en segundos.</p>
+      <div class="loader"><span></span></div>
+    </div>
+  </div>
+
   <nav class="nav">
     <div class="wrap nav-inner">
-      <div class="logo">
-        <div class="logo-mark">IA</div>
-        <div class="logo-copy">
-          <b>IncluApp Pro</b>
-          <span>Accesibilidad útil, clara y presentable</span>
+      <div class="brand">
+        <div class="brand-mark">IA</div>
+        <div>
+          <strong>IncluApp</strong>
+          <span>Accesibilidad humana y alegre</span>
         </div>
       </div>
       <div class="nav-links">
         <a href="#funciones">Funciones</a>
+        <a href="#situaciones">Situaciones</a>
         <a href="#demo">Demo</a>
-        <a href="#negocio">Monetización</a>
-        <a href="#contacto">Contacto</a>
+        <a href="#gratis">Free + Pro</a>
       </div>
     </div>
   </nav>
@@ -224,262 +314,335 @@
   <header class="hero">
     <div class="wrap hero-grid">
       <div>
-        <div class="eyebrow">MVP accesible • Web profesional • Lista para presentar</div>
-        <h1>Una app pensada para ver, oír, hablar y conectar mejor.</h1>
+        <div class="eyebrow">Humana · útil · visible · instalable</div>
+        <h1>Una pequeña joya para comunicarse mejor en momentos reales.</h1>
         <p class="lead">
-          IncluApp Pro reúne herramientas de accesibilidad en una sola experiencia:
-          lectura en voz alta, comunicación por frases rápidas, alto contraste y una interfaz simple
-          para personas ciegas, sordas, mudas o con necesidades mixtas.
+          IncluApp está pensada para personas ciegas, sordas, mudas o con necesidades mixtas.
+          Tiene funciones claras, colores amables y una demo que se entiende al instante:
+          pedir ayuda, responder rápido, mostrar mensajes, escuchar una frase y sentirse menos solo.
         </p>
         <div class="hero-actions">
-          <a class="btn btn-primary" href="#demo">Probar demo</a>
-          <a class="btn btn-secondary" href="#negocio">Ver modelo de negocio</a>
+          <a class="btn btn-main" href="#demo">Probar la demo</a>
+          <button class="btn btn-soft" id="installBtnTop" type="button">Instalar app</button>
         </div>
-        <div class="hero-stats">
-          <div class="stat"><b>3</b><span>modos de uso</span></div>
-          <div class="stat"><b>PWA</b><span>instalable</span></div>
-          <div class="stat"><b>MVP</b><span>para mostrar hoy</span></div>
+        <div class="hero-mini">
+          <div class="mini"><b>Modo free</b><span>Ya útil desde el primer minuto</span></div>
+          <div class="mini"><b>Modo humano</b><span>Mensajes cotidianos y cálidos</span></div>
+          <div class="mini"><b>Modo pro</b><span>IA premium en pequeño espacio</span></div>
         </div>
       </div>
 
-      <div class="phone">
-        <div class="phone-screen">
-          <div class="screen-head">
-            <strong>Vista previa</strong>
-            <span class="screen-pill">IncluApp Pro</span>
+      <div class="preview">
+        <div class="phone">
+          <div class="phone-top">
+            <span>Vista previa</span>
+            <span>💛</span>
           </div>
-          <div class="screen-box">
-            <h3>Modo Visión</h3>
-            <p>Botones grandes, alto contraste, voz guiada y respuestas rápidas.</p>
+
+          <div class="phone-card">
+            <h3>Necesito ayuda</h3>
+            <p>Frases rápidas, lectura en voz alta y mensaje visible en grande.</p>
           </div>
-          <div class="screen-box">
-            <h3>Función destacada</h3>
-            <p>Comunicación instantánea: toca una frase y la app la reproduce con voz o la muestra en pantalla.</p>
+
+          <div class="phone-card">
+            <h3>No oigo bien</h3>
+            <p>Mensajes claros para que la otra persona se adapte rápido sin tensión.</p>
           </div>
+
+          <div class="phone-card">
+            <h3>Estoy bien, gracias</h3>
+            <p>Respuestas simples para no tener que escribirlo todo cada vez.</p>
+          </div>
+
           <div class="chips">
             <span class="chip">Visión</span>
             <span class="chip">Audición</span>
             <span class="chip">Mixto</span>
+            <span class="chip">Alto contraste</span>
           </div>
         </div>
       </div>
     </div>
   </header>
 
-  <section id="funciones">
+  <section id="funciones" class="reveal">
     <div class="wrap">
       <div class="section-head">
-        <h2>Funciones útiles y fáciles de entender</h2>
-        <p>Diseñada para una demo potente: transmite valor social, experiencia práctica y potencial de monetización sin necesidad de backend complejo.</p>
+        <h2>Funciones visibles y fáciles de entender</h2>
+        <p>Lo primero que debe sentir quien la vea es: “esto sí sirve”. Nada escondido, nada frío.</p>
       </div>
-      <div class="grid-3">
-        <div class="card feature">
+
+      <div class="cards-3">
+        <div class="card">
           <div class="icon">🔊</div>
-          <h3>Lectura en voz alta</h3>
-          <p>Convierte frases y mensajes en audio con un toque. Ideal para apoyar la comunicación inmediata.</p>
+          <h3>Texto a voz</h3>
+          <p>Escribe un mensaje o toca una frase y la app lo reproduce en voz alta al instante.</p>
         </div>
-        <div class="card feature">
-          <div class="icon">👁️</div>
-          <h3>Alto contraste</h3>
-          <p>Modo visual reforzado con textos más claros y estructura simple para facilitar el uso diario.</p>
-        </div>
-        <div class="card feature">
+
+        <div class="card">
           <div class="icon">💬</div>
           <h3>Frases rápidas</h3>
-          <p>Respuestas ya preparadas para pedir ayuda, orientarse o comunicarse sin teclear demasiado.</p>
+          <p>Mensajes listos para pedir ayuda, aclarar que no oyes bien o responder sin complicarte.</p>
         </div>
-        <div class="card feature">
-          <div class="icon">📳</div>
-          <h3>Vibración guiada</h3>
-          <p>Feedback háptico para confirmar acciones. Útil en entornos con ruido o para apoyo sensorial.</p>
-        </div>
-        <div class="card feature">
-          <div class="icon">📱</div>
-          <h3>Instalable</h3>
-          <p>Puede usarse como web y como app añadida a la pantalla principal del móvil.</p>
-        </div>
-        <div class="card feature">
-          <div class="icon">🌍</div>
-          <h3>Escalable</h3>
-          <p>Base perfecta para añadir IA visual, traducción, OCR y servicios premium en una fase siguiente.</p>
+
+        <div class="card">
+          <div class="icon">👁️</div>
+          <h3>Visibilidad real</h3>
+          <p>Modo alto contraste, texto grande y panel de mensaje claro para que todo se vea mejor.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <section id="demo">
+  <section id="situaciones" class="reveal">
     <div class="wrap">
       <div class="section-head">
-        <h2>Demo funcional para enseñar hoy</h2>
-        <p>Puedes interactuar, probar la lectura en voz, cambiar a alto contraste y mostrar cómo responder rápido en una situación real.</p>
+        <h2>Situaciones reales, no funciones vacías</h2>
+        <p>La diferencia está en esto: no habla como una startup. Habla como una ayuda real.</p>
       </div>
 
-      <div class="modes">
-        <button class="mode active" data-mode="vision">Modo Visión</button>
-        <button class="mode" data-mode="audicion">Modo Audición</button>
-        <button class="mode" data-mode="mixto">Modo Mixto</button>
-        <button class="mode" id="contrastToggle">Alto contraste</button>
+      <div class="scenario-grid">
+        <div class="card scenario">
+          <strong>Estoy en la calle y necesito ayuda</strong>
+          <p>No hace falta explicar una vida entera. A veces basta con una frase clara y un botón grande.</p>
+        </div>
+
+        <div class="card scenario">
+          <strong>No oigo bien lo que me dicen</strong>
+          <p>Mostrar “háblame más despacio” o “escríbelo aquí” cambia totalmente la situación.</p>
+        </div>
+
+        <div class="card scenario">
+          <strong>Quiero responder rápido y tranquilo</strong>
+          <p>Sí, no, gracias, estoy bien. Lo simple también puede ser un tesoro.</p>
+        </div>
       </div>
 
-      <div class="demo-grid" style="margin-top:18px;">
-        <div class="card demo-card">
-          <h3>Frases rápidas</h3>
-          <p class="small">Toca una frase y se leerá en voz alta o se mostrará en pantalla.</p>
-          <div class="quick-actions" style="margin-top:16px;">
-            <button class="quick" data-say="Necesito ayuda, por favor.">Necesito ayuda</button>
-            <button class="quick" data-say="No puedo oírte bien. Háblame por escrito.">Háblame por escrito</button>
-            <button class="quick" data-say="¿Puedes acompañarme un momento?">Acompáñame</button>
-            <button class="quick" data-say="Estoy bien, gracias.">Estoy bien</button>
+      <div class="tagline">No es solo bonita. Tiene alma y utilidad.</div>
+    </div>
+  </section>
+
+  <section id="demo" class="reveal">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Demo humana con funciones reales</h2>
+        <p>Aquí es donde alguien debería pensar: “joder, qué tesoro”.</p>
+      </div>
+
+      <div class="mode-row">
+        <button class="mode-btn active" data-mode="vision">Modo visión</button>
+        <button class="mode-btn" data-mode="audicion">Modo audición</button>
+        <button class="mode-btn" data-mode="mixto">Modo mixto</button>
+        <button class="mode-btn" id="contrastBtn">Alto contraste</button>
+        <button class="mode-btn" id="textBtn">Texto grande</button>
+      </div>
+
+      <div class="demo-wrap">
+        <div class="stack">
+          <div class="card">
+            <h3>Necesito ayuda</h3>
+            <div class="quick-grid" style="margin-top:14px">
+              <button class="quick" data-say="¿Puedes ayudarme, por favor?">¿Puedes ayudarme?<small>Pedir apoyo sin dar rodeos</small></button>
+              <button class="quick" data-say="Estoy un poco perdido.">Estoy perdido<small>Mensaje rápido y humano</small></button>
+              <button class="quick" data-say="¿Puedes acompañarme un momento?">Acompáñame<small>Para pedir compañía</small></button>
+              <button class="quick" data-say="Necesito un momento, por favor.">Necesito un momento<small>Reducir tensión</small></button>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>No oigo bien</h3>
+            <div class="quick-grid" style="margin-top:14px">
+              <button class="quick" data-say="Háblame más despacio, por favor.">Más despacio<small>Comunicación más amable</small></button>
+              <button class="quick" data-say="Escríbelo aquí, por favor.">Escríbelo aquí<small>Apoyo visual inmediato</small></button>
+              <button class="quick" data-say="Mírame cuando me hables, por favor.">Mírame al hablar<small>Mejor comprensión</small></button>
+              <button class="quick" data-say="No te he entendido bien.">No te he entendido<small>Evitar frustración</small></button>
+            </div>
           </div>
         </div>
 
-        <div class="card demo-card">
-          <h3>Texto a voz</h3>
-          <p class="small">Escribe o pega un mensaje y pulsa reproducir.</p>
-          <textarea id="ttsInput" class="textarea" rows="5">Hola. Esta es una demo profesional de IncluApp Pro.</textarea>
-          <div class="toolbar">
-            <button class="btn btn-primary" id="speakBtn" type="button">Reproducir voz</button>
-            <button class="btn btn-secondary" id="stopBtn" type="button">Detener</button>
+        <div class="stack">
+          <div class="card">
+            <h3>Escribe y reproduce</h3>
+            <textarea id="ttsInput">Hola. Esta app está pensada para ayudar a una persona a comunicarse con calma, claridad y un poco más de alegría.</textarea>
+            <div class="toolbar">
+              <button class="btn btn-main" id="speakBtn" type="button">Reproducir voz</button>
+              <button class="btn btn-soft" id="stopBtn" type="button">Detener</button>
+              <button class="btn btn-soft" id="clearBtn" type="button">Limpiar</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Mensaje visible</h3>
+            <div class="output" id="output">Aquí aparecerán los mensajes elegidos, en grande y con claridad.</div>
+          </div>
+
+          <div class="assist">
+            <div class="tiny">
+              <b>Vibración</b>
+              <span>Confirma acciones con una pequeña respuesta háptica si el dispositivo lo permite.</span>
+            </div>
+            <div class="tiny">
+              <b>Instalable</b>
+              <span>Se puede usar como app añadiéndola a la pantalla de inicio del móvil.</span>
+            </div>
           </div>
         </div>
       </div>
-
-      <div class="card demo-card" style="margin-top:18px;">
-        <h3>Panel visible en pantalla</h3>
-        <p class="small">Esto permite enseñar la comunicación visual sin depender de audio.</p>
-        <div id="output" class="output" style="margin-top:14px;">Aquí aparecerán las frases seleccionadas.</div>
-      </div>
     </div>
   </section>
 
-  <section id="negocio">
+  <section id="gratis" class="reveal">
     <div class="wrap">
       <div class="section-head">
-        <h2>Modelo de negocio realista</h2>
-        <p>Una base gratuita para adopción y una capa premium para monetizar. Ideal para presentar como proyecto con impacto y crecimiento.</p>
+        <h2>Modo free muy visible. Modo de pago en pequeño espacio.</h2>
+        <p>La base gratuita tiene que enamorar. Lo premium solo se menciona con elegancia.</p>
       </div>
-      <div class="pricing">
-        <div class="card price">
-          <h3>Gratis</h3>
-          <div class="num">0 €</div>
-          <p>Versión abierta para uso diario y difusión del producto.</p>
-          <ul>
-            <li>Frases rápidas</li>
-            <li>Texto a voz</li>
-            <li>Alto contraste</li>
-          </ul>
+
+      <div class="free-paid">
+        <div class="card">
+          <h3 style="margin-top:0">Gratis desde el primer día</h3>
+          <div class="free-list" style="margin-top:14px">
+            <div class="pill">✅ Frases rápidas</div>
+            <div class="pill">✅ Texto a voz</div>
+            <div class="pill">✅ Mensaje visible en pantalla</div>
+            <div class="pill">✅ Modos visión / audición / mixto</div>
+            <div class="pill">✅ Alto contraste</div>
+            <div class="pill">✅ Texto grande</div>
+          </div>
         </div>
-        <div class="card price">
-          <div class="badge">Más vendible</div>
-          <h3>Premium</h3>
-          <div class="num">4,99 €/mes</div>
-          <p>Para usuarios que quieran más funciones y asistencia inteligente.</p>
-          <ul>
-            <li>OCR y reconocimiento de objetos</li>
-            <li>IA para describir escenas</li>
-            <li>Historial y favoritos</li>
-          </ul>
-        </div>
-        <div class="card price">
-          <h3>B2B / Centros</h3>
-          <div class="num">Desde 49 €</div>
-          <p>Licencias para asociaciones, colegios, clínicas o residencias.</p>
-          <ul>
-            <li>Panel administrable</li>
-            <li>Perfiles adaptados</li>
-            <li>Soporte y personalización</li>
-          </ul>
+
+        <div class="paid-mini">
+          <div class="paid-note">
+            <strong>Pro, pero sin invadir</strong>
+            OCR, descripción de imágenes, traducción en tiempo real y perfiles personalizados.
+          </div>
+          <div class="paid-note">
+            <strong>Ideal para futuro</strong>
+            Asociaciones, centros, residencias o versión premium con IA visual.
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <section id="contacto">
+  <section class="reveal">
     <div class="wrap">
-      <div class="cta">
-        <div>
-          <h2 style="margin:0 0 10px;">Lista para enseñar como proyecto serio</h2>
-          <p class="small" style="max-width:760px;">
-            Puedes presentarla como MVP social, startup de accesibilidad o base para una app con IA integrada.
+      <div class="impact">
+        <div class="card">
+          <div class="quote">“Lo mejor no es que se vea bonita. Lo mejor es que te hace imaginar a quién podría ayudar.”</div>
+        </div>
+        <div class="card">
+          <h3 style="margin-top:0">Por qué puede gustar tanto</h3>
+          <p>
+            Porque tiene color, humanidad y funciones claras. No transmite pena ni frialdad.
+            Transmite cercanía, alivio y utilidad real. Justo lo que hace que alguien la recuerde.
           </p>
-          <div class="install-note" id="installNote">En iPhone puedes usar “Compartir → Añadir a pantalla de inicio” para instalarla.</div>
-        </div>
-        <div style="display:flex;gap:12px;flex-wrap:wrap;">
-          <a class="btn btn-primary" href="mailto:contacto@incluapp.pro">Contactar</a>
-          <button class="btn btn-secondary" id="installBtn" type="button">Instalar app</button>
+          <div style="margin-top:14px">
+            <button class="btn btn-main" id="installBtnBottom" type="button">Instalar ahora</button>
+          </div>
         </div>
       </div>
     </div>
   </section>
-
-  <footer class="footer">
-    <div class="wrap">
-      IncluApp Pro · MVP accesible listo para presentar
-    </div>
-  </footer>
 
   <script>
     const output = document.getElementById('output');
     const ttsInput = document.getElementById('ttsInput');
     const speakBtn = document.getElementById('speakBtn');
     const stopBtn = document.getElementById('stopBtn');
-    const contrastToggle = document.getElementById('contrastToggle');
-    const installBtn = document.getElementById('installBtn');
+    const clearBtn = document.getElementById('clearBtn');
+    const contrastBtn = document.getElementById('contrastBtn');
+    const textBtn = document.getElementById('textBtn');
+    const installBtnTop = document.getElementById('installBtnTop');
+    const installBtnBottom = document.getElementById('installBtnBottom');
     let deferredPrompt = null;
 
-    function speak(text){
-      output.textContent = text;
-      if (!('speechSynthesis' in window)) return;
-      window.speechSynthesis.cancel();
-      const utter = new SpeechSynthesisUtterance(text);
-      utter.lang = 'es-ES';
-      utter.rate = 0.95;
-      window.speechSynthesis.speak(utter);
+    function vibrateSoft(){
+      if ('vibrate' in navigator) navigator.vibrate([50, 30, 50]);
     }
 
-    document.querySelectorAll('[data-say]').forEach(btn=>{
-      btn.addEventListener('click', ()=> speak(btn.dataset.say));
+    function speak(text){
+      const value = (text || '').trim();
+      if(!value) return;
+      output.textContent = value;
+      vibrateSoft();
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const utter = new SpeechSynthesisUtterance(value);
+        utter.lang = 'es-ES';
+        utter.rate = 0.96;
+        utter.pitch = 1.02;
+        window.speechSynthesis.speak(utter);
+      }
+    }
+
+    document.querySelectorAll('[data-say]').forEach(btn => {
+      btn.addEventListener('click', () => speak(btn.dataset.say));
     });
 
-    speakBtn.addEventListener('click', ()=> speak(ttsInput.value.trim() || 'Escribe un texto para reproducir.'));
-    stopBtn.addEventListener('click', ()=> window.speechSynthesis && window.speechSynthesis.cancel());
+    speakBtn.addEventListener('click', () => speak(ttsInput.value));
+    stopBtn.addEventListener('click', () => {
+      if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+    });
+    clearBtn.addEventListener('click', () => {
+      ttsInput.value = '';
+      output.textContent = 'Aquí aparecerán los mensajes elegidos, en grande y con claridad.';
+    });
 
-    contrastToggle.addEventListener('click', ()=>{
+    contrastBtn.addEventListener('click', () => {
       document.body.classList.toggle('contrast');
+      contrastBtn.classList.toggle('active');
+      vibrateSoft();
     });
 
-    document.querySelectorAll('.mode').forEach(btn=>{
-      if (btn.id === 'contrastToggle') return;
-      btn.addEventListener('click', ()=>{
-        document.querySelectorAll('.mode').forEach(b=> b.classList.remove('active'));
+    textBtn.addEventListener('click', () => {
+      document.body.classList.toggle('large-text');
+      textBtn.classList.toggle('active');
+      vibrateSoft();
+    });
+
+    document.querySelectorAll('.mode-btn[data-mode]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.mode-btn[data-mode]').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         const mode = btn.dataset.mode;
-        if(mode === 'vision'){
-          output.textContent = 'Modo visión activo: interfaz clara, contraste y lectura guiada.';
-        }else if(mode === 'audicion'){
-          output.textContent = 'Modo audición activo: apoyo visual, texto claro y comunicación escrita.';
-        }else{
-          output.textContent = 'Modo mixto activo: combinación de apoyo visual, textual y voz.';
+        if (mode === 'vision') {
+          output.textContent = 'Modo visión activo: más claridad visual, contraste y lectura guiada.';
+        } else if (mode === 'audicion') {
+          output.textContent = 'Modo audición activo: apoyo escrito, mensajes visibles y comunicación directa.';
+        } else {
+          output.textContent = 'Modo mixto activo: voz, texto y apoyo visual trabajando juntos.';
         }
       });
     });
 
-    window.addEventListener('beforeinstallprompt', (e)=>{
-      e.preventDefault();
-      deferredPrompt = e;
-      installBtn.style.display = 'inline-flex';
-      document.getElementById('installNote').textContent = 'La app puede instalarse desde el navegador.';
-    });
-
-    installBtn.addEventListener('click', async ()=>{
+    function handleInstall(){
       if (deferredPrompt) {
         deferredPrompt.prompt();
-        await deferredPrompt.userChoice;
-        deferredPrompt = null;
+        deferredPrompt.userChoice.then(() => { deferredPrompt = null; });
       } else {
-        alert('En iPhone: pulsa Compartir y luego “Añadir a pantalla de inicio”.');
+        alert('En iPhone: pulsa Compartir y luego "Añadir a pantalla de inicio".');
       }
+    }
+
+    installBtnTop.addEventListener('click', handleInstall);
+    installBtnBottom.addEventListener('click', handleInstall);
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
     });
+
+    const observer = new IntersectionObserver((entries)=>{
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('show');
+      });
+    }, {threshold:.12});
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./sw.js').catch(()=>{});
+    }
   </script>
 </body>
 </html>
