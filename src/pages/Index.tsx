@@ -1,16 +1,34 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { AccessibilityProvider, useAccessibility } from "@/context/AccessibilityContext";
+import AppHeader from "@/components/AppHeader";
+import HomeScreen from "@/components/HomeScreen";
+import BlindMode from "@/components/BlindMode";
+import DeafMode from "@/components/DeafMode";
+import MuteMode from "@/components/MuteMode";
+import CombinedMode from "@/components/CombinedMode";
+import BigMessageScreen from "@/components/BigMessageScreen";
+import EmergencyButton from "@/components/EmergencyButton";
 
-// IMPORTANT: Fully REPLACE this with your own code
-const PlaceholderIndex = () => {
-  // PLACEHOLDER: Replace this entire return statement with the user's app.
-  // The inline background color is intentionally not part of the design system.
+const AppContent = () => {
+  const { mode, textScale } = useAccessibility();
+
   return (
-    <div className="flex min-h-screen items-center justify-center" style={{ backgroundColor: '#fcfbf8' }}>
-      <img data-lovable-blank-page-placeholder="REMOVE_THIS" src="/placeholder.svg" alt="Your app will live here!" />
+    <div className="min-h-screen bg-background" style={{ fontSize: `${textScale}rem` }}>
+      {mode !== "bigmessage" && <AppHeader />}
+      {mode === "home" && <HomeScreen />}
+      {mode === "blind" && <BlindMode />}
+      {mode === "deaf" && <DeafMode />}
+      {mode === "mute" && <MuteMode />}
+      {mode === "combined" && <CombinedMode />}
+      {mode === "bigmessage" && <BigMessageScreen />}
+      {mode !== "bigmessage" && <EmergencyButton />}
     </div>
   );
 };
 
-const Index = PlaceholderIndex;
+const Index = () => (
+  <AccessibilityProvider>
+    <AppContent />
+  </AccessibilityProvider>
+);
 
 export default Index;
