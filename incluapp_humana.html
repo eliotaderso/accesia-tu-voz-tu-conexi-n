@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IncluApp</title>
+<meta name="theme-color" content="#0f172a">
+
+<style>
+body{margin:0;font-family:Arial;background:#0b1220;color:white;text-align:center}
+.container{padding:20px}
+h1{font-size:28px}
+.subtitle{color:#ccc;margin-bottom:30px}
+.block{background:#111a2e;padding:20px;border-radius:15px;margin:15px 0}
+button{width:100%;padding:15px;margin:8px 0;border:none;border-radius:10px;font-size:16px;background:#4f7cff;color:white}
+.output{margin-top:20px;padding:15px;background:#000;border-radius:10px;min-height:60px;font-size:18px}
+.big{font-size:22px;font-weight:bold}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+<h1>IncluApp</h1>
+<p class="subtitle">Una ayuda sencilla para comunicarse y sentirse acompañado</p>
+
+<div class="block">
+<p><b>Imagina esto:</b></p>
+<p>No oyes bien. Estás en la calle. Necesitas ayuda.</p>
+</div>
+
+<div class="block">
+<p class="big">Necesito ayuda</p>
+<button onclick="hablar('¿Puedes ayudarme, por favor?')">¿Puedes ayudarme?</button>
+<button onclick="hablar('Estoy un poco perdido')">Estoy perdido</button>
+<button onclick="hablar('¿Puedes acompañarme un momento?')">Acompáñame</button>
+</div>
+
+<div class="block">
+<p class="big">No oigo bien</p>
+<button onclick="hablar('Háblame más despacio, por favor')">Más despacio</button>
+<button onclick="hablar('Escríbelo aquí, por favor')">Escríbelo</button>
+</div>
+
+<div class="block">
+<p class="big">Responder rápido</p>
+<button onclick="hablar('Sí')">Sí</button>
+<button onclick="hablar('No')">No</button>
+<button onclick="hablar('Gracias')">Gracias</button>
+</div>
+
+<div class="block">
+<p class="big">Escribir mensaje</p>
+<input id="texto" placeholder="Escribe aquí..." style="width:100%;padding:12px;border-radius:10px;border:none;margin-bottom:10px;">
+<button onclick="leerTexto()">Reproducir</button>
+</div>
+
+<div id="output" class="output"></div>
+
+<p style="margin-top:30px;color:#aaa;">
+No es solo una app. Es una forma de entenderse.
+</p>
+
+</div>
+
+<script>
+function hablar(texto){
+document.getElementById("output").innerText = texto;
+const msg = new SpeechSynthesisUtterance(texto);
+msg.lang = "es-ES";
+speechSynthesis.speak(msg);
+}
+function leerTexto(){
+const texto = document.getElementById("texto").value;
+hablar(texto);
+}
+</script>
+
+</body>
+</html>
