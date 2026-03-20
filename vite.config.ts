@@ -3,5 +3,5 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
-  base: '/accesia-tu-voz-tu-conexi-in/', // 👈 ESTO ES LA CLAVE
+  base: '/accesia-tu-voz-tu-conexi-in/', // 
 })
