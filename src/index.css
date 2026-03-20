@@ -2,54 +2,59 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
 
 @layer base {
   :root {
-    --background: 210 20% 98%;
-    --foreground: 220 25% 10%;
+    --background: 220 20% 97%;
+    --foreground: 220 25% 12%;
 
     --card: 0 0% 100%;
-    --card-foreground: 220 25% 10%;
+    --card-foreground: 220 25% 12%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 220 25% 10%;
+    --popover-foreground: 220 25% 12%;
 
-    --primary: 210 80% 42%;
+    --primary: 200 85% 45%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 210 30% 92%;
-    --secondary-foreground: 220 25% 10%;
+    --secondary: 220 15% 93%;
+    --secondary-foreground: 220 25% 12%;
 
-    --muted: 210 20% 94%;
-    --muted-foreground: 220 10% 46%;
+    --muted: 220 14% 96%;
+    --muted-foreground: 220 10% 50%;
 
-    --accent: 170 60% 40%;
+    --accent: 170 65% 38%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 75% 55%;
     --destructive-foreground: 0 0% 100%;
 
-    --emergency: 0 85% 50%;
+    --emergency: 0 80% 52%;
     --emergency-foreground: 0 0% 100%;
+    --emergency-glow: 0 85% 60%;
 
-    --blind: 35 90% 50%;
+    --blind: 32 95% 52%;
     --blind-foreground: 0 0% 100%;
+    --blind-surface: 32 60% 96%;
 
-    --deaf: 260 60% 55%;
+    --deaf: 265 55% 52%;
     --deaf-foreground: 0 0% 100%;
+    --deaf-surface: 265 40% 96%;
 
-    --mute-mode: 170 60% 40%;
+    --mute-mode: 170 65% 38%;
     --mute-mode-foreground: 0 0% 100%;
+    --mute-mode-surface: 170 40% 96%;
 
-    --combined: 210 80% 42%;
+    --combined: 200 85% 45%;
     --combined-foreground: 0 0% 100%;
+    --combined-surface: 200 50% 96%;
 
-    --border: 210 20% 88%;
-    --input: 210 20% 88%;
-    --ring: 210 80% 42%;
+    --border: 220 15% 90%;
+    --input: 220 15% 90%;
+    --ring: 200 85% 45%;
 
-    --radius: 1rem;
+    --radius: 1.25rem;
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -60,28 +65,44 @@
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
 
-    --font-display: 'Outfit', sans-serif;
+    --font-display: 'Outfit', system-ui, sans-serif;
+
+    --shadow-card: 0 2px 8px -2px hsl(220 25% 12% / 0.06), 0 4px 16px -4px hsl(220 25% 12% / 0.08);
+    --shadow-elevated: 0 8px 24px -8px hsl(220 25% 12% / 0.1), 0 16px 48px -16px hsl(220 25% 12% / 0.12);
+    --shadow-button: 0 2px 6px -1px hsl(220 25% 12% / 0.12), 0 1px 3px hsl(220 25% 12% / 0.08);
   }
 
   .high-contrast {
     --background: 0 0% 0%;
-    --foreground: 60 100% 50%;
-    --card: 0 0% 5%;
-    --card-foreground: 60 100% 50%;
-    --primary: 60 100% 50%;
+    --foreground: 60 100% 55%;
+    --card: 0 0% 6%;
+    --card-foreground: 60 100% 55%;
+    --primary: 60 100% 55%;
     --primary-foreground: 0 0% 0%;
-    --secondary: 0 0% 15%;
-    --secondary-foreground: 60 100% 50%;
-    --muted: 0 0% 12%;
-    --muted-foreground: 0 0% 70%;
-    --border: 60 100% 50%;
-    --input: 0 0% 20%;
+    --secondary: 0 0% 14%;
+    --secondary-foreground: 60 100% 55%;
+    --muted: 0 0% 10%;
+    --muted-foreground: 0 0% 75%;
+    --border: 60 60% 30%;
+    --input: 0 0% 18%;
     --accent: 120 100% 50%;
     --accent-foreground: 0 0% 0%;
     --destructive: 0 100% 50%;
     --destructive-foreground: 0 0% 0%;
     --emergency: 0 100% 50%;
-    --emergency-foreground: 0 0% 0%;
+    --emergency-foreground: 60 100% 55%;
+    --blind: 45 100% 50%;
+    --blind-foreground: 0 0% 0%;
+    --deaf: 280 100% 65%;
+    --deaf-foreground: 0 0% 0%;
+    --mute-mode: 150 100% 45%;
+    --mute-mode-foreground: 0 0% 0%;
+    --combined: 200 100% 55%;
+    --combined-foreground: 0 0% 0%;
+
+    --shadow-card: 0 0 0 2px hsl(60 100% 55%);
+    --shadow-elevated: 0 0 0 3px hsl(60 100% 55%);
+    --shadow-button: 0 0 0 2px hsl(60 100% 55%);
   }
 
   .dark {
@@ -121,25 +142,83 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
     font-family: var(--font-display);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-tap-highlight-color: transparent;
+    overscroll-behavior: none;
+  }
+
+  /* iOS safe areas */
+  html {
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
   }
 }
 
 @layer utilities {
+  .text-accessible-lg {
+    @apply text-xl leading-relaxed font-medium;
+  }
   .text-accessible-xl {
     @apply text-2xl leading-relaxed font-semibold;
   }
   .text-accessible-2xl {
-    @apply text-3xl leading-relaxed font-bold;
+    @apply text-3xl leading-snug font-bold;
   }
   .text-accessible-3xl {
-    @apply text-4xl leading-relaxed font-extrabold;
+    @apply text-4xl leading-snug font-extrabold;
   }
   .touch-target {
-    @apply min-h-[56px] min-w-[56px];
+    @apply min-h-[48px] min-w-[48px];
   }
   .touch-target-lg {
-    @apply min-h-[72px] min-w-[72px];
+    @apply min-h-[64px] min-w-[64px];
   }
+  .shadow-card {
+    box-shadow: var(--shadow-card);
+  }
+  .shadow-elevated {
+    box-shadow: var(--shadow-elevated);
+  }
+  .shadow-button {
+    box-shadow: var(--shadow-button);
+  }
+  .glass {
+    @apply bg-card/80 backdrop-blur-xl;
+  }
+  .safe-bottom {
+    padding-bottom: max(1.5rem, env(safe-area-inset-bottom));
+  }
+}
+
+/* Pulse animation for emergency */
+@keyframes emergency-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 hsl(var(--emergency) / 0.5); }
+  50% { box-shadow: 0 0 0 12px hsl(var(--emergency) / 0); }
+}
+
+.emergency-pulse {
+  animation: emergency-pulse 2s ease-in-out infinite;
+}
+
+/* Listening animation */
+@keyframes listening-wave {
+  0%, 100% { transform: scaleY(0.4); }
+  50% { transform: scaleY(1); }
+}
+
+.listening-bar {
+  animation: listening-wave 1s ease-in-out infinite;
+}
+.listening-bar:nth-child(2) { animation-delay: 0.15s; }
+.listening-bar:nth-child(3) { animation-delay: 0.3s; }
+.listening-bar:nth-child(4) { animation-delay: 0.45s; }
+.listening-bar:nth-child(5) { animation-delay: 0.6s; }
+
+/* Smooth scroll */
+.scroll-smooth {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
 }

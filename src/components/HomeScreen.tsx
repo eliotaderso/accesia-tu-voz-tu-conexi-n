@@ -1,46 +1,51 @@
-import { Eye, Ear, MessageCircle, Layers } from "lucide-react";
+import { Eye, Ear, MessageCircle, Layers, ChevronRight, Sparkles } from "lucide-react";
 import { useAccessibility, AppMode } from "@/context/AccessibilityContext";
 import { motion } from "framer-motion";
+import accesiaLogo from "@/assets/accesia-logo.png";
 
-const MODES: { id: AppMode; label: string; desc: string; icon: React.ReactNode; colorClass: string }[] = [
+const MODES: { id: AppMode; label: string; desc: string; icon: React.ReactNode; bg: string; iconBg: string }[] = [
   {
     id: "blind",
-    label: "Ciego",
-    desc: "Lectura en voz alta y navegación simplificada",
-    icon: <Eye className="h-10 w-10" />,
-    colorClass: "bg-blind text-blind-foreground",
+    label: "Visión",
+    desc: "Navegación por voz y botones grandes",
+    icon: <Eye className="h-7 w-7" />,
+    bg: "bg-blind",
+    iconBg: "bg-blind/15 text-blind",
   },
   {
     id: "deaf",
-    label: "Sordo",
-    desc: "Voz a texto en tiempo real",
-    icon: <Ear className="h-10 w-10" />,
-    colorClass: "bg-deaf text-deaf-foreground",
+    label: "Audición",
+    desc: "Convierte voz a texto en tiempo real",
+    icon: <Ear className="h-7 w-7" />,
+    bg: "bg-deaf",
+    iconBg: "bg-deaf/15 text-deaf",
   },
   {
     id: "mute",
-    label: "Mudo",
-    desc: "Texto a voz y frases rápidas",
-    icon: <MessageCircle className="h-10 w-10" />,
-    colorClass: "bg-mute-mode text-mute-mode-foreground",
+    label: "Habla",
+    desc: "Escribe y el teléfono habla por ti",
+    icon: <MessageCircle className="h-7 w-7" />,
+    bg: "bg-mute-mode",
+    iconBg: "bg-mute-mode/15 text-mute-mode",
   },
   {
     id: "combined",
-    label: "Combinado",
-    desc: "Comunicación accesible múltiple",
-    icon: <Layers className="h-10 w-10" />,
-    colorClass: "bg-combined text-combined-foreground",
+    label: "Múltiple",
+    desc: "Comunicación rápida y accesible",
+    icon: <Layers className="h-7 w-7" />,
+    bg: "bg-combined",
+    iconBg: "bg-combined/15 text-combined",
   },
 ];
 
 const container = {
   hidden: {},
-  show: { transition: { staggerChildren: 0.08 } },
+  show: { transition: { staggerChildren: 0.06, delayChildren: 0.15 } },
 };
 
 const item = {
-  hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0, transition: { type: "spring" as const, stiffness: 300, damping: 24 } },
+  hidden: { opacity: 0, y: 16, scale: 0.97 },
+  show: { opacity: 1, y: 0, scale: 1, transition: { type: "spring" as const, stiffness: 400, damping: 28 } },
 };
 
 const HomeScreen = () => {
@@ -52,41 +57,62 @@ const HomeScreen = () => {
   };
 
   return (
-    <div className="flex flex-col items-center px-4 pt-8 pb-28">
+    <div className="flex flex-col px-5 pt-4 pb-32">
+      {/* Hero section */}
       <motion.div
-        initial={{ opacity: 0, y: -10 }}
+        initial={{ opacity: 0, y: -8 }}
         animate={{ opacity: 1, y: 0 }}
-        className="mb-8 text-center"
+        transition={{ duration: 0.4 }}
+        className="mb-6 flex flex-col items-center text-center"
       >
-        <p className="text-accessible-xl text-muted-foreground">
-          Selecciona tu modo de accesibilidad
+        <div className="mb-3 flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10 shadow-card">
+          <img src={accesiaLogo} alt="" className="h-12 w-12" />
+        </div>
+        <h2 className="text-accessible-2xl mb-1">¿Cómo podemos ayudarte?</h2>
+        <p className="text-muted-foreground text-accessible-lg max-w-xs">
+          Elige el modo que mejor se adapte a tus necesidades
         </p>
       </motion.div>
 
+      {/* Mode cards */}
       <motion.div
         variants={container}
         initial="hidden"
         animate="show"
-        className="grid w-full max-w-md grid-cols-1 gap-4"
+        className="flex flex-col gap-3"
       >
         {MODES.map((m) => (
           <motion.button
             key={m.id}
             variants={item}
-            whileTap={{ scale: 0.97 }}
+            whileTap={{ scale: 0.98 }}
             onClick={() => handleSelect(m)}
-            className={`${m.colorClass} flex items-center gap-5 rounded-2xl p-6 text-left shadow-md touch-target-lg transition-shadow hover:shadow-lg`}
+            className="group flex items-center gap-4 rounded-2xl bg-card p-4 shadow-card transition-all active:shadow-elevated"
             aria-label={`Activar modo ${m.label}: ${m.desc}`}
           >
-            <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-xl bg-white/20">
+            <div className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl ${m.iconBg} transition-transform group-active:scale-95`}>
               {m.icon}
             </div>
-            <div>
-              <span className="text-accessible-2xl block">{m.label}</span>
-              <span className="text-sm opacity-90">{m.desc}</span>
+            <div className="flex-1 text-left">
+              <span className="text-lg font-bold block leading-tight">{m.label}</span>
+              <span className="text-sm text-muted-foreground leading-snug">{m.desc}</span>
             </div>
+            <ChevronRight className="h-5 w-5 text-muted-foreground/40 transition-transform group-active:translate-x-0.5" />
           </motion.button>
         ))}
+      </motion.div>
+
+      {/* Tip */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.5 }}
+        className="mt-6 flex items-center gap-3 rounded-2xl bg-primary/5 p-4"
+      >
+        <Sparkles className="h-5 w-5 text-primary shrink-0" />
+        <p className="text-sm text-muted-foreground">
+          <strong className="text-foreground">Consejo:</strong> Usa los controles de la barra superior para ajustar el contraste y tamaño del texto.
+        </p>
       </motion.div>
     </div>
   );
