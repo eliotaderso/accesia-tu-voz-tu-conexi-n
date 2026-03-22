@@ -1,0 +1,17 @@
+{
+  "name": "IncluApp",
+  "short_name": "IncluApp",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#fff7fb",
+  "theme_color": "#ff7eb6",
+  "description": "App accesible, humana y alegre para comunicarse y sentirse acompañado.",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
